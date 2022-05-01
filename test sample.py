@@ -13,12 +13,12 @@ warnings.simplefilter("ignore")
 import os, cv2
 os.chdir(r'C:\Users\Lenovo\Desktop\ExpressWrite\uploads')
 
-fileList = [x for x in os.listdir() if 'jpg' in x.lower()]
+fileList = [x for x in os.listdir() if 'png' in x.lower()]
 fileList[:5]
 
-Image(filename = fileList[2], width = 300)
+Image(filename = fileList[0], width = 300)
 
-img = fileList[2]
+img = fileList[0]
 
 def findHorizontalLines(img):
     img = cv2.imread(img) 
@@ -85,6 +85,60 @@ def pageSegmentation1(img, w, df_SegmentLocations):
 
     return segments
 
-img = fileList[2]
+img = fileList[0]
 w = lineLocations.shape[1]
 segments = pageSegmentation1(img, w, df_SegmentLocations)
+
+import re
+import cv2
+import pytesseract
+from pytesseract import Output
+
+# tell pytesseract where the engine is installed
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
+
+
+def extractTextFromImg(segment):
+    text = pytesseract.image_to_string(segment, lang='eng')         
+    text = text.encode("gbk", 'ignore').decode("gbk", "ignore")
+        
+    return text
+
+segment = segments[2]
+text = extractTextFromImg(segment)
+print(text)
+
+import os
+import io
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:\\Users\\Lenovo\\Desktop\\ExpressWrite\\JSON File\\my-key.json"
+print('Credendtials from environ: {}'.format(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')))
+
+
+def CloudVisionTextExtractor(handwritings):
+    # convert image from numpy to bytes for submittion to Google Cloud Vision
+    _, encoded_image = cv2.imencode('.png', handwritings)
+    content = encoded_image.tobytes()
+    image = vision.types.Image(content=content)
+    
+    # feed handwriting image segment to the Google Cloud Vision API
+    client = vision.ImageAnnotatorClient()
+    response = client.document_text_detection(image=image)
+    
+    return response
+
+def getTextFromVisionResponse(response):
+    texts = []
+    for page in response.full_text_annotation.pages:
+        for i, block in enumerate(page.blocks):  
+            for paragraph in block.paragraphs:       
+                for word in paragraph.words:
+                    word_text = ''.join([symbol.text for symbol in word.symbols])
+                    texts.append(word_text)
+
+    return ' '.join(texts)
+
+handwritings = segments[2]
+response = CloudVisionTextExtractor(handwritings)
+handwrittenText = getTextFromVisionResponse(response)
+print(handwrittenText)
+
