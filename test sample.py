@@ -11,7 +11,7 @@ import warnings
 warnings.simplefilter("ignore")
 
 import os, cv2
-os.chdir(r'C:\Users\Lenovo\Desktop\ExpressWrite\uploads')
+os.chdir(r'C:\Users\potpo\Desktop\ExpressWrite\uploads')
 
 fileList = [x for x in os.listdir() if 'png' in x.lower()]
 fileList[:5]
@@ -104,13 +104,20 @@ def extractTextFromImg(segment):
         
     return text
 
-segment = segments[2]
-text = extractTextFromImg(segment)
-print(text)
+n = 0
+x = 0
+for n in segments:
+    
+    segment = segments[x]
+    text = extractTextFromImg(segment)
+    print(text)
+    x = x+1
+else:
+  print("Finally finished!")
 
 import os
 import io
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:\\Users\\Lenovo\\Desktop\\ExpressWrite\\JSON File\\my-key.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:\\Users\\potpo\\Desktop\\ExpressWrite\\JSON File\\my-key.json"
 print('Credendtials from environ: {}'.format(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')))
 
 
@@ -118,7 +125,7 @@ def CloudVisionTextExtractor(handwritings):
     # convert image from numpy to bytes for submittion to Google Cloud Vision
     _, encoded_image = cv2.imencode('.png', handwritings)
     content = encoded_image.tobytes()
-    image = vision.types.Image(content=content)
+    image = vision.Image(content=content)
     
     # feed handwriting image segment to the Google Cloud Vision API
     client = vision.ImageAnnotatorClient()
