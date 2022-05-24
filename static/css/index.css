@@ -236,6 +236,7 @@ span{
   margin-top: 8px;
 }
 ul {
+    background-color: white;
     font-size: large;
     list-style-type: none;
 }
