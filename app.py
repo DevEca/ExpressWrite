@@ -5,12 +5,21 @@ from werkzeug.utils import secure_filename
 
 
 UPLOAD_FOLDER = 'uploads'
+
 app = Flask(__name__)
+
+picFolder = os.path.join('static', 'img')
+app.config['UPLOAD_FOLDER'] = picFolder
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-@app.route('/')
+@app.route("/")
 def index():
-   return render_template('index.html')
+    logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
+    return render_template("index.html", user_image = logo)
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
 	
 @app.route('/textresult', methods = ['GET', 'POST'])
 def upload_file1():
@@ -33,7 +42,7 @@ def upload_file1():
       warnings.simplefilter("ignore")
 
       import os, cv2
-      os.chdir(r'C:\Users\potpo\Desktop\ExpressWrite\uploads')
+      os.chdir(r'C:\Users\Bisita\Desktop\ExpressWrite\uploads')
 
       fileList = [x for x in os.listdir() if 'png' in x.lower()]
       fileList[:5]
