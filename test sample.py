@@ -29,6 +29,15 @@ def findHorizontalLines(img):
     # set threshold to remove background noise
     thresh = cv2.threshold(gray,30, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
 
+    # increase contrast
+    pxmin = np.min(img)
+    pxmax = np.max(img)
+    imgContrast = (img - pxmin) / (pxmax - pxmin) * 255
+
+    #increase line width
+    kernel = np.ones((3, 3), np.uint8)
+    imgMorph = cv2.erode(imgContrast, kernel, iterations = 1)
+
     
     # define rectangle structure (line) to look for: width 100, hight 1. This is a 
     horizontal_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (200,1))
@@ -104,48 +113,36 @@ def extractTextFromImg(segment):
         
     return text
 
-n = 0
-x = 0
-for n in segments:
+# n = 0
+#x = 0
+#for n in segments:
     
-    segment = segments[x]
-    text = extractTextFromImg(segment)
-    print(text)
-    x = x+1
-else:
-  print("Finally finished!")
+   # segment = segments[x]
+   # text = extractTextFromImg(segment)
+   # print(text)
+  #  x = x+1
+#else:
+ #   print("Finally finished!")
 
-import os
-import io
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:\\Users\\potpo\\Desktop\\ExpressWrite\\JSON File\\my-key.json"
-print('Credendtials from environ: {}'.format(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')))
+from flask import Flask, render_template
+app = Flask(__name__)
 
-
-def CloudVisionTextExtractor(handwritings):
-    # convert image from numpy to bytes for submittion to Google Cloud Vision
-    _, encoded_image = cv2.imencode('.png', handwritings)
-    content = encoded_image.tobytes()
-    image = vision.Image(content=content)
+@app.route('/textresult')
+def textresult():
+    n = 0
+    x = 0
     
-    # feed handwriting image segment to the Google Cloud Vision API
-    client = vision.ImageAnnotatorClient()
-    response = client.document_text_detection(image=image)
+    listtext = []
+   
+    for n in segments:
     
-    return response
+        segment = segments[x]
+        text = extractTextFromImg(segment)
+        listtext.append(text)
+        x = x+1
+       
+    else:
+        return render_template('result.html', textresult = listtext)
 
-def getTextFromVisionResponse(response):
-    texts = []
-    for page in response.full_text_annotation.pages:
-        for i, block in enumerate(page.blocks):  
-            for paragraph in block.paragraphs:       
-                for word in paragraph.words:
-                    word_text = ''.join([symbol.text for symbol in word.symbols])
-                    texts.append(word_text)
-
-    return ' '.join(texts)
-
-handwritings = segments[2]
-response = CloudVisionTextExtractor(handwritings)
-handwrittenText = getTextFromVisionResponse(response)
-print(handwrittenText)
-
+if __name__ == '__main__':
+   app.run(debug = True)
