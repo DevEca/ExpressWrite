@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+   <head>
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css')}}">
+   </head>
+   <body>
+   
+      <h1>Your writing means...</h1>
+      <ul>
+         {% for i in textresult: %}
+         <li>{{ i }}</li>
+    {% endfor %}
+    </ul>
+      <!--<p>{{ textresult }}</p>-->
+      
+         <form method="post" action="/">
+             <input type="submit" value="Translate Again" name="Translate Again"/>
+         </form>
+   </body>
+</html>
