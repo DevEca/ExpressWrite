@@ -5,15 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ExpressWrite</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css')}}">
-</head>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}">
+    
 <body>
-    <h1>Welcome to ExpressWrite</h1>
-
-    <form action = "http://localhost:5000/textresult" method = "POST" 
+        <div class="banner">
+            <div class="navbar">
+                <img src="{{ user_image }}" class="logo">
+                <ul>
+                    <li><a href="{{ url_for('login') }}">Login/Register</a></li>
+                </ul>
+            </div>
+            <div class="content">
+                <h1>ExpressWrite</h1>
+                <p>Subscribe to IsmiXpert Tutorials YouTube channel to watch more videos, <br>press the bell icon to get latest updates.</p>
+        <form action = "http://localhost:5000/textresult" method = "POST" 
          enctype = "multipart/form-data">
          <input type = "file" name = "file" />
          <input type = "submit"/>
       </form>   
+    </div>
 </body>
 </html>
