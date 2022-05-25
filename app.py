@@ -41,7 +41,7 @@ def upload_file1():
       warnings.simplefilter("ignore")
 
       import os, cv2
-      os.chdir(r'C:\Users\Lenovo\Desktop\ExpressWrite\uploads')
+      os.chdir(r'C:\Users\potpo\Desktop\ExpressWrite\uploads')
 
       fileList = [x for x in os.listdir() if 'png' in x.lower()]
       fileList[:5]
@@ -136,13 +136,13 @@ group by cumSum
    
    import io
    import os
-   os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/Users/Lenovo/Desktop/ExpressWrite/JSON File/optical-highway-348907-231d2bf0c1d6.json"
+   os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/Users/potpo/Desktop/ExpressWrite/JSON File/optical-highway-348907-231d2bf0c1d6.json"
 
    def CloudVisionTextExtractor(handwritings):
       # convert image from numpy to bytes for submittion to Google Cloud Vision
       _, encoded_image = cv2.imencode('.png', handwritings)
       content = encoded_image.tobytes()
-      image = vision.types.Image(content=content)
+      image = vision.Image(content=content)
       
       # feed handwriting image segment to the Google Cloud Vision API
       client = vision.ImageAnnotatorClient()
@@ -160,6 +160,21 @@ group by cumSum
                      texts.append(word_text)
 
       return ' '.join(texts)
+
+   m = 0
+   y = 0
+
+   listtextCV = []
+   
+   for m in segments:
+    
+      handwritings = segments[y]
+      response = CloudVisionTextExtractor(handwritings)
+      handwrittenText = getTextFromVisionResponse(response)
+      listtextCV.append(handwrittenText)
+      y = y+1
+   else:
+      return render_template('result.html', textresultCV = listtextCV)
  
 # tell pytesseract where the engine is installed
    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
@@ -175,17 +190,19 @@ group by cumSum
    n = 0
    x = 0
     
-   listtext = []
+   listtextPT = []
    
    for n in segments:
     
       segment = segments[x]
       text = extractTextFromImg(segment)
-      listtext.append(text)
+      listtextPT.append(text)
       x = x+1
        
    else:
-      return render_template('result.html', textresult = listtext)
+      return render_template('result.html', textresultPT = listtextPT)
+
+  
 
 @app.route("/", methods=['GET', 'POST'])
 def transagain():
