@@ -28,7 +28,6 @@ def upload_file1():
       f = request.files['file']
       filename = secure_filename(f.filename)
       f.save(os.path.join(app.config['UPLOAD_FOLDER'], 'img_00.png'))
-      
 
       from IPython.display import Image
       from matplotlib import pyplot as plt
@@ -42,7 +41,7 @@ def upload_file1():
       warnings.simplefilter("ignore")
 
       import os, cv2
-      os.chdir(r'C:\Users\Bisita\Desktop\ExpressWrite\uploads')
+      os.chdir(r'C:\Users\Lenovo\Desktop\ExpressWrite\uploads')
 
       fileList = [x for x in os.listdir() if 'png' in x.lower()]
       fileList[:5]
@@ -129,11 +128,39 @@ group by cumSum
    w = lineLocations.shape[1]
    segments = pageSegmentation1(img, w, df_SegmentLocations)
 
+    
    import re
    import cv2
    import pytesseract
    from pytesseract import Output
+   
+   import io
+   import os
+   os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/Users/Lenovo/Desktop/ExpressWrite/JSON File/optical-highway-348907-231d2bf0c1d6.json"
 
+   def CloudVisionTextExtractor(handwritings):
+      # convert image from numpy to bytes for submittion to Google Cloud Vision
+      _, encoded_image = cv2.imencode('.png', handwritings)
+      content = encoded_image.tobytes()
+      image = vision.types.Image(content=content)
+      
+      # feed handwriting image segment to the Google Cloud Vision API
+      client = vision.ImageAnnotatorClient()
+      response = client.document_text_detection(image=image)
+      
+      return response
+
+   def getTextFromVisionResponse(response):
+      texts = []
+      for page in response.full_text_annotation.pages:
+         for i, block in enumerate(page.blocks):  
+               for paragraph in block.paragraphs:       
+                  for word in paragraph.words:
+                     word_text = ''.join([symbol.text for symbol in word.symbols])
+                     texts.append(word_text)
+
+      return ' '.join(texts)
+ 
 # tell pytesseract where the engine is installed
    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
 
@@ -143,6 +170,7 @@ group by cumSum
       text = text.encode("gbk", 'ignore').decode("gbk", "ignore")
         
       return text
+
 
    n = 0
    x = 0
