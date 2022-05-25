@@ -2,11 +2,57 @@ from cProfile import run
 import os
 from flask import Flask, render_template, request, url_for
 from werkzeug.utils import secure_filename
+from flask import Flask,render_template, request
+from flask_mysqldb import MySQL
+ 
 
 
 UPLOAD_FOLDER = 'uploads'
 
 app = Flask(__name__)
+
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'expresswrite'
+
+mysql = MySQL(app)
+ 
+#Creating a connection cursor
+cursor = mysql.connection.cursor()
+ 
+#Executing SQL Statements
+cursor.execute(''' CREATE TABLE table_name(field1, field2...) ''')
+cursor.execute(''' INSERT INTO table_name VALUES(v1,v2...) ''')
+cursor.execute(''' DELETE FROM table_name WHERE condition ''')
+ 
+#Saving the Actions performed on the DB
+mysql.connection.commit()
+ 
+#Closing the cursor
+cursor.close()
+
+@app.route('/form')
+def form():
+    return render_template('login.html')
+ 
+@app.route('/login', methods = ['POST', 'GET'])
+def login():
+    if request.method == 'GET':
+        return "Login via the login Form"
+     
+    if request.method == 'POST':
+        Name = request.form['Name']
+        Birthdate = request.form['Birthdate']
+        email = request.form['email']
+        password = request.form['password']
+        cursor = mysql.connection.cursor()
+        cursor.execute(''' INSERT INTO info_table VALUES(%s,%s)''',(Name,Birthdate,email,password))
+        mysql.connection.commit()
+        cursor.close()
+        return f"Done!!"
+ 
+app.run(host='localhost', port=5000)
 
 picFolder = os.path.join('static', 'img')
 app.config['UPLOAD_FOLDER'] = picFolder
@@ -41,7 +87,7 @@ def upload_file1():
       warnings.simplefilter("ignore")
 
       import os, cv2
-      os.chdir(r'C:\Users\potpo\Desktop\ExpressWrite\uploads')
+      os.chdir(r'C:\Users\Lenovo\Desktop\ExpressWrite\uploads')
 
       fileList = [x for x in os.listdir() if 'png' in x.lower()]
       fileList[:5]
@@ -136,7 +182,7 @@ group by cumSum
    
    import io
    import os
-   os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/Users/potpo/Desktop/ExpressWrite/JSON File/optical-highway-348907-231d2bf0c1d6.json"
+   os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/Users/Lenovo/Desktop/ExpressWrite/JSON File/optical-highway-348907-231d2bf0c1d6.json"
 
    def CloudVisionTextExtractor(handwritings):
       # convert image from numpy to bytes for submittion to Google Cloud Vision
