@@ -1,0 +1,2 @@
+str = "database"
+print(str)

@@ -1,13 +1,14 @@
 from cProfile import run
+from crypt import methods
 import os
 from flask import Flask, render_template, request, url_for
+from flask_mysqldb import MySQL 
 from werkzeug.utils import secure_filename
-from flask import Flask,render_template, request
-from flask_mysqldb import MySQL
- 
+import MySQLdb.cursors
 
 
 UPLOAD_FOLDER = 'uploads'
+
 
 app = Flask(__name__)
 
@@ -17,42 +18,28 @@ app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'expresswrite'
 
 mysql = MySQL(app)
- 
-#Creating a connection cursor
-cursor = mysql.connection.cursor()
- 
-#Executing SQL Statements
-cursor.execute(''' CREATE TABLE table_name(field1, field2...) ''')
-cursor.execute(''' INSERT INTO table_name VALUES(v1,v2...) ''')
-cursor.execute(''' DELETE FROM table_name WHERE condition ''')
- 
-#Saving the Actions performed on the DB
-mysql.connection.commit()
- 
-#Closing the cursor
-cursor.close()
+
 
 @app.route('/form')
 def form():
     return render_template('login.html')
  
-@app.route('/login', methods = ['POST', 'GET'])
+@app.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        return "Login via the login Form"
-     
+        return render_template('login.html')
+@app.route('/register', methods = ['GET','POST'])
+def register():
     if request.method == 'POST':
         Name = request.form['Name']
         Birthdate = request.form['Birthdate']
         email = request.form['email']
         password = request.form['password']
         cursor = mysql.connection.cursor()
-        cursor.execute(''' INSERT INTO info_table VALUES(%s,%s)''',(Name,Birthdate,email,password))
+        cursor.execute(" INSERT INTO user (Name, Birthdate, email, password) VALUES(%s,%s,%s,%s)",(Name, Birthdate, email, password))
         mysql.connection.commit()
         cursor.close()
-        return f"Done!!"
- 
-app.run(host='localhost', port=5000)
+        return f"DONE!"
 
 picFolder = os.path.join('static', 'img')
 app.config['UPLOAD_FOLDER'] = picFolder
@@ -62,10 +49,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def index():
     logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
     return render_template("index.html", user_image = logo)
-
-@app.route('/login')
-def login():
-    return render_template('login.html')
+    
 	
 @app.route('/textresult', methods = ['GET', 'POST'])
 def upload_file1():
