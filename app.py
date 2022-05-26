@@ -2,7 +2,6 @@ from cProfile import run
 import os
 from flask import Flask, render_template, request, url_for, session, redirect
 from werkzeug.utils import secure_filename
-import mysql.connector
 
 app = Flask(__name__)
 
