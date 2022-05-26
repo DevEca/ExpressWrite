@@ -1,14 +1,10 @@
 from cProfile import run
-from crypt import methods
 import os
-from flask import Flask, render_template, request, url_for
-from flask_mysqldb import MySQL 
+from flask import Flask, render_template, request, url_for, session, redirect
 from werkzeug.utils import secure_filename
-import MySQLdb.cursors
-
-
-UPLOAD_FOLDER = 'uploads'
-
+from flask import Flask,render_template, request
+from flask_mysqldb import MySQL
+ 
 
 app = Flask(__name__)
 
@@ -19,37 +15,50 @@ app.config['MYSQL_DB'] = 'expresswrite'
 
 mysql = MySQL(app)
 
-
 @app.route('/form')
 def form():
     return render_template('login.html')
  
-@app.route('/login', methods = ['GET', 'POST'])
+@app.route('/login', methods = ['POST', 'GET'])
 def login():
     if request.method == 'GET':
-        return render_template('login.html')
-@app.route('/register', methods = ['GET','POST'])
-def register():
+        return "Login via the login Form"
+     
     if request.method == 'POST':
         Name = request.form['Name']
         Birthdate = request.form['Birthdate']
         email = request.form['email']
         password = request.form['password']
         cursor = mysql.connection.cursor()
-        cursor.execute(" INSERT INTO user (Name, Birthdate, email, password) VALUES(%s,%s,%s,%s)",(Name, Birthdate, email, password))
+        cursor.execute(''' INSERT INTO info_table VALUES(%s,%s)''',(Name,Birthdate,email,password))
         mysql.connection.commit()
         cursor.close()
-        return f"DONE!"
+        return f"Done!!"
+ 
+app.run(host='localhost', port=5000)
 
 picFolder = os.path.join('static', 'img')
 app.config['UPLOAD_FOLDER'] = picFolder
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/")
 def index():
     logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
     return render_template("index.html", user_image = logo)
-    
+
+@app.route('/login')
+def login():
+   logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
+   return render_template('login.html', user_image = logo)
+
+@app.route('/register')
+def register():
+   logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
+   return render_template('register.html', user_image = logo)
+
+@app.route('/user')
+def user():
+   logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
+   return render_template('user.html', user_image = logo)
 	
 @app.route('/textresult', methods = ['GET', 'POST'])
 def upload_file1():
