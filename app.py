@@ -1,16 +1,16 @@
 from cProfile import run
 import os
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, session, redirect
 from werkzeug.utils import secure_filename
-
-
-UPLOAD_FOLDER = 'uploads'
+import mysql.connector
 
 app = Flask(__name__)
 
+UPLOAD_FOLDER = 'uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 picFolder = os.path.join('static', 'img')
 app.config['UPLOAD_FOLDER'] = picFolder
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/")
 def index():
@@ -19,7 +19,18 @@ def index():
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+   logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
+   return render_template('login.html', user_image = logo)
+
+@app.route('/register')
+def register():
+   logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
+   return render_template('register.html', user_image = logo)
+
+@app.route('/user')
+def user():
+   logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
+   return render_template('user.html', user_image = logo)
 	
 @app.route('/textresult', methods = ['GET', 'POST'])
 def upload_file1():
