@@ -6,9 +6,17 @@
    <body>
    
       <h1>Your writing means...</h1>
+      <h3>Pytesseract</h3>
       <ul>
-         {% for i in textresult: %}
+         {% for i in textresultPT: %}
          <li>{{ i }}</li>
+      {% endfor %}
+      </ul>
+
+      <h3>Cloud Vision</h3>
+      <ul>
+         {% for n in textresultCV: %}
+         <li>{{ n }}</li>
     {% endfor %}
     </ul>
       <!--<p>{{ textresult }}</p>-->

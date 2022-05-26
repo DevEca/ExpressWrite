@@ -2,11 +2,40 @@ from cProfile import run
 import os
 from flask import Flask, render_template, request, url_for, session, redirect
 from werkzeug.utils import secure_filename
+from flask import Flask,render_template, request
+from flask_mysqldb import MySQL
+ 
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = 'uploads'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'expresswrite'
+
+mysql = MySQL(app)
+
+@app.route('/form')
+def form():
+    return render_template('login.html')
+ 
+@app.route('/login', methods = ['POST', 'GET'])
+def login():
+    if request.method == 'GET':
+        return "Login via the login Form"
+     
+    if request.method == 'POST':
+        Name = request.form['Name']
+        Birthdate = request.form['Birthdate']
+        email = request.form['email']
+        password = request.form['password']
+        cursor = mysql.connection.cursor()
+        cursor.execute(''' INSERT INTO info_table VALUES(%s,%s)''',(Name,Birthdate,email,password))
+        mysql.connection.commit()
+        cursor.close()
+        return f"Done!!"
+ 
+app.run(host='localhost', port=5000)
 
 picFolder = os.path.join('static', 'img')
 app.config['UPLOAD_FOLDER'] = picFolder
@@ -38,7 +67,6 @@ def upload_file1():
       f = request.files['file']
       filename = secure_filename(f.filename)
       f.save(os.path.join(app.config['UPLOAD_FOLDER'], 'img_00.png'))
-      
 
       from IPython.display import Image
       from matplotlib import pyplot as plt
@@ -52,7 +80,7 @@ def upload_file1():
       warnings.simplefilter("ignore")
 
       import os, cv2
-      os.chdir(r'C:\Users\Bisita\Desktop\ExpressWrite\uploads')
+      os.chdir(r'C:\Users\Lenovo\Desktop\ExpressWrite\uploads')
 
       fileList = [x for x in os.listdir() if 'png' in x.lower()]
       fileList[:5]
@@ -139,11 +167,54 @@ group by cumSum
    w = lineLocations.shape[1]
    segments = pageSegmentation1(img, w, df_SegmentLocations)
 
+    
    import re
    import cv2
    import pytesseract
    from pytesseract import Output
+   
+   import io
+   import os
+   os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/Users/Lenovo/Desktop/ExpressWrite/JSON File/optical-highway-348907-231d2bf0c1d6.json"
 
+   def CloudVisionTextExtractor(handwritings):
+      # convert image from numpy to bytes for submittion to Google Cloud Vision
+      _, encoded_image = cv2.imencode('.png', handwritings)
+      content = encoded_image.tobytes()
+      image = vision.Image(content=content)
+      
+      # feed handwriting image segment to the Google Cloud Vision API
+      client = vision.ImageAnnotatorClient()
+      response = client.document_text_detection(image=image)
+      
+      return response
+
+   def getTextFromVisionResponse(response):
+      texts = []
+      for page in response.full_text_annotation.pages:
+         for i, block in enumerate(page.blocks):  
+               for paragraph in block.paragraphs:       
+                  for word in paragraph.words:
+                     word_text = ''.join([symbol.text for symbol in word.symbols])
+                     texts.append(word_text)
+
+      return ' '.join(texts)
+
+   m = 0
+   y = 0
+
+   listtextCV = []
+   
+   for m in segments:
+    
+      handwritings = segments[y]
+      response = CloudVisionTextExtractor(handwritings)
+      handwrittenText = getTextFromVisionResponse(response)
+      listtextCV.append(handwrittenText)
+      y = y+1
+   else:
+      return render_template('result.html', textresultCV = listtextCV)
+ 
 # tell pytesseract where the engine is installed
    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
 
@@ -154,20 +225,23 @@ group by cumSum
         
       return text
 
+
    n = 0
    x = 0
     
-   listtext = []
+   listtextPT = []
    
    for n in segments:
     
       segment = segments[x]
       text = extractTextFromImg(segment)
-      listtext.append(text)
+      listtextPT.append(text)
       x = x+1
        
    else:
-      return render_template('result.html', textresult = listtext)
+      return render_template('result.html', textresultPT = listtextPT)
+
+  
 
 @app.route("/", methods=['GET', 'POST'])
 def transagain():
