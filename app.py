@@ -4,56 +4,60 @@ from flask import Flask, render_template, request, url_for, session, redirect
 from werkzeug.utils import secure_filename
 from flask import Flask,render_template, request
 from flask_mysqldb import MySQL
- 
+import mysql
+import MySQLdb.cursors
+import re
 
 app = Flask(__name__)
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'expresswrite'
+app.config['MYSQL_HOST'] = "localhost"
+app.config['MYSQL_USER'] = "root"
+app.config['MYSQL_PASSWORD'] = " "
+app.config['MYSQL_DB'] = "expresswrite"
+app.config['MYSQL_CURSORCLASS']='DictCursor'
 
-mysql = MySQL(app)
+mysql = MySQL()
+mysql.init_app(app)
 
-@app.route('/form')
-def form():
-    return render_template('login.html')
- 
-@app.route('/login', methods = ['POST', 'GET'])
+@app.route('/')
+def index():
+    logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
+    return render_template("index.html", user_image = logo)
+  
+@app.route('/login', methods =['GET', 'POST'])
 def login():
-    if request.method == 'GET':
-        return "Login via the login Form"
-     
     if request.method == 'POST':
-        Name = request.form['Name']
-        Birthdate = request.form['Birthdate']
+        email= request.form['email']
+        password = request.form['password'].encode('utf-8')
+        
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute("SELECT * FROM user WHERE email = %s AND password = %s", (email, password))
+        users = cur.fetchone()
+        cur.close()
+        if users:
+            session['loggedin'] = True
+            session['email'] = users['email']
+            return render_template('index.html')
+        else:
+            return 'Incorrect email / password !'
+    return render_template('login.html')
+
+@app.route('/register', methods = ['GET', 'POST'])
+def register():
+    if request.method =='POST':
+        name = request.form['name']
         email = request.form['email']
         password = request.form['password']
-        cursor = mysql.connection.cursor()
-        cursor.execute(''' INSERT INTO info_table VALUES(%s,%s)''',(Name,Birthdate,email,password))
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO user(name,email,password) VALUES(%s, %s, %s)", (name, email, password))
         mysql.connection.commit()
-        cursor.close()
-        return f"Done!!"
- 
-app.run(host='localhost', port=5000)
+        cur.close()
+        return render_template('login.html')
+    return render_template('register.html')
 
 picFolder = os.path.join('static', 'img')
 app.config['UPLOAD_FOLDER'] = picFolder
 
-@app.route("/")
-def index():
-    logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
-    return render_template("index.html", user_image = logo)
-
-@app.route('/login')
-def login():
-   logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
-   return render_template('login.html', user_image = logo)
-
-@app.route('/register')
-def register():
-   logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
-   return render_template('register.html', user_image = logo)
 
 @app.route('/user')
 def user():
