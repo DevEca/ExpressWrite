@@ -5,24 +5,34 @@
    </head>
    <body>
    
-      <h1>Your writing means...</h1>
-      <h3>Pytesseract</h3>
-      <ul>
-         {% for i in textresultPT: %}
-         <li>{{ i }}</li>
+   <h1>Your writing means...</h1>
+   <h3>Pytesseract</h3>
+   <ul>
+      {% for i in textresultPT: %}
+      <li>{{ i }}</li>
       {% endfor %}
-      </ul>
+   </ul>
 
-      <h3>Cloud Vision</h3>
-      <ul>
-         {% for n in textresultCV: %}
-         <li>{{ n }}</li>
-    {% endfor %}
-    </ul>
-      <!--<p>{{ textresult }}</p>-->
+   <h3>Cloud Vision</h3>
+   <ul>
+      {% for n in textresultCV: %}
+      <li>{{ n }}</li>
+      {% endfor %}
+   </ul>
+
+    <textarea id="textresult" name="text result" rows="25" cols="50">
+      {% for n in textresultCV: %}
+      {{ n }}
+      {% endfor %}
+   </textarea><br><br>
+
+   <form action="http://localhost:5000/translation" method = "POST" enctype = "multipart/form-data">
+      <input type="submit" value="Save Translation"/>
+      </form>
       
-         <form method="post" action="/">
-             <input type="submit" value="Translate Again" name="Translate Again"/>
-         </form>
+   <form method="post" action="/">
+      <input type="submit" value="Translate Again" name="Translate Again"/>
+      </form>
+   
    </body>
 </html>
