@@ -84,7 +84,7 @@ def upload_file1():
       warnings.simplefilter("ignore")
 
       import os, cv2
-      os.chdir(r'C:\Users\Lenovo\Desktop\ExpressWrite\uploads')
+      os.chdir(r'C:\Users\potpo\Desktop\ExpressWrite\uploads')
 
       fileList = [x for x in os.listdir() if 'png' in x.lower()]
       fileList[:5]
@@ -179,7 +179,7 @@ group by cumSum
    
    import io
    import os
-   os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/Users/Lenovo/Desktop/ExpressWrite/JSON File/optical-highway-348907-231d2bf0c1d6.json"
+   os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/Users/potpo/Desktop/ExpressWrite/JSON File/optical-highway-348907-231d2bf0c1d6.json"
 
    def CloudVisionTextExtractor(handwritings):
       # convert image from numpy to bytes for submittion to Google Cloud Vision
@@ -217,7 +217,7 @@ group by cumSum
       listtextCV.append(handwrittenText)
       y = y+1
    else:
-      return render_template('result.html', textresultCV = listtextCV)
+      pass
  
 # tell pytesseract where the engine is installed
    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
@@ -243,7 +243,7 @@ group by cumSum
       x = x+1
        
    else:
-      return render_template('result.html', textresultPT = listtextPT)
+      return render_template('result.html', textresultPT = listtextPT, textresultCV = listtextCV)
 
   
 
