@@ -15,32 +15,66 @@ app.config['MYSQL_USER'] = "root"
 app.config['MYSQL_PASSWORD'] = " "
 app.config['MYSQL_DB'] = "expresswrite"
 app.config['MYSQL_CURSORCLASS']='DictCursor'
+app.config['SECRET_KEY'] = " "
 
 mysql = MySQL()
 mysql.init_app(app)
 
-@app.route('/')
+#buttons paths:
+
+@app.route('/user_image')
 def index():
     logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
     return render_template("index.html", user_image = logo)
+
+@app.route('/')
+def index1():
+    logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
+    return render_template("index.html", user_image = logo)
+
+@app.route("/transagain")
+def transagain():
+   if 'loggedin' in session:
+      return redirect(url_for('indexuser'))
+   else:
+         return render_template("index.html")
+
+@app.route('/indexuser')
+def indexuser():
+   users = session['name']
+   return render_template('indexuser.html', name=users)
+
+@app.route('/profile')
+def profile():
+   if 'loggedin' in session:
+      cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+      cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))
+      account = cursor.fetchone()
+      return render_template('profile.html', account=account)
+   return redirect(url_for('login'))
+
+#end of button paths
+
+# Login Function  
   
 @app.route('/login', methods =['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        email= request.form['email']
+   if request.method == 'POST':
+        name = request.form['username']
         password = request.form['password'].encode('utf-8')
-        
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cur.execute("SELECT * FROM user WHERE email = %s AND password = %s", (email, password))
+        cur.execute("SELECT * FROM user WHERE name = %s AND password = %s", (name, password))
         users = cur.fetchone()
         cur.close()
         if users:
             session['loggedin'] = True
-            session['email'] = users['email']
-            return render_template('index.html')
+            session['name'] = users['name']
+            return redirect(url_for('indexuser', users=users ))
         else:
-            return 'Incorrect email / password !'
-    return render_template('login.html')
+            return 'Incorrect username / password !'
+   return render_template('login.html')
+
+# Register Function
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
@@ -52,18 +86,12 @@ def register():
         cur.execute("INSERT INTO user(name,email,password) VALUES(%s, %s, %s)", (name, email, password))
         mysql.connection.commit()
         cur.close()
-        return render_template('login.html')
+        return render_template('successreg.html')
     return render_template('register.html')
 
 picFolder = os.path.join('static', 'img')
 app.config['UPLOAD_FOLDER'] = picFolder
 
-
-@app.route('/user')
-def user():
-   logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
-   return render_template('user.html', user_image = logo)
-	
 @app.route('/textresult', methods = ['GET', 'POST'])
 def upload_file1():
    import os
@@ -77,14 +105,11 @@ def upload_file1():
       import pandas as pd, numpy as np
       pd.options.display.float_format = ':,.2f'.format
 
-      from google.cloud import vision
-      import io
-
       import warnings
       warnings.simplefilter("ignore")
 
       import os, cv2
-      os.chdir(r'C:\Users\potpo\Desktop\ExpressWrite\uploads')
+      os.chdir(r'C:\xampp\htdocs\ExpressWrite\static\img')
 
       fileList = [x for x in os.listdir() if 'png' in x.lower()]
       fileList[:5]
@@ -170,16 +195,11 @@ group by cumSum
    img = fileList[0]
    w = lineLocations.shape[1]
    segments = pageSegmentation1(img, w, df_SegmentLocations)
-
-    
-   import re
-   import cv2
-   import pytesseract
-   from pytesseract import Output
    
+   from google.cloud import vision
    import io
    import os
-   os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/Users/potpo/Desktop/ExpressWrite/JSON File/optical-highway-348907-231d2bf0c1d6.json"
+   os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/xampp/htdocs/ExpressWrite/JSON File/expresswrite-dd1b301590f7.json"
 
    def CloudVisionTextExtractor(handwritings):
       # convert image from numpy to bytes for submittion to Google Cloud Vision
@@ -190,7 +210,6 @@ group by cumSum
       # feed handwriting image segment to the Google Cloud Vision API
       client = vision.ImageAnnotatorClient()
       response = client.document_text_detection(image=image)
-      
       return response
 
    def getTextFromVisionResponse(response):
@@ -203,7 +222,7 @@ group by cumSum
                      texts.append(word_text)
 
       return ' '.join(texts)
-
+# Saving cloud translation into array
    m = 0
    y = 0
 
@@ -218,7 +237,14 @@ group by cumSum
       y = y+1
    else:
       pass
- 
+
+# Pytesseract  
+
+   import re
+   import cv2
+   import pytesseract
+   from pytesseract import Output
+
 # tell pytesseract where the engine is installed
    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
 
@@ -229,7 +255,7 @@ group by cumSum
         
       return text
 
-
+# Saving pytesseract translation into array
    n = 0
    x = 0
     
@@ -241,15 +267,9 @@ group by cumSum
       text = extractTextFromImg(segment)
       listtextPT.append(text)
       x = x+1
-       
+ # render both translations on result.html       
    else:
       return render_template('result.html', textresultPT = listtextPT, textresultCV = listtextCV)
 
-  
-
-@app.route("/", methods=['GET', 'POST'])
-def transagain():
-    if request.method == 'POST':
-      return render_template("index.html")
 if __name__ == '__main__':
    app.run(debug = True)
