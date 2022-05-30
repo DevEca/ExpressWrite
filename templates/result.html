@@ -2,11 +2,16 @@
 <html>
    <head>
    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css')}}">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
    </head>
    <body>
-      <div id="resultdiv">
+      <div class="navbar">
+         <a href="{{ url_for('transagain') }}"><img src="{{url_for('static', filename='img/logo.png')}}" class="logo"></a>
+     </div>
+   <div id="resultdiv">
+      
    <h1>Your writing means...</h1>
-   <!--<h3>Pytesseract</h3>
+   <h3>Pytesseract</h3>
    <ul>
       {% for i in textresultPT: %}
       <li>{{ i }}</li>
@@ -18,7 +23,8 @@
       {% for n in textresultCV: %}
       <li>{{ n }}</li>
       {% endfor %}
-   </ul>-->
+   </ul>
+   
 
     <textarea id="textresult" name="text result" rows="25" cols="50">
       {% for n in textresultCV: %}
@@ -28,10 +34,10 @@
 
    <form action="http://localhost:5000/translation" method = "POST" enctype = "multipart/form-data">
       <input type="submit" value="Save Translation"/>
-      </form>
+      </form><br>
       
-   <form method="post" action="/">
-      <input type="submit" value="Translate Again" name="Translate Again"/>
+      <form action="http://localhost:5000/transagain">
+      <input type="submit" value="Translate Again" name="transagain"/>
       </form>
    </div>
    </body>
