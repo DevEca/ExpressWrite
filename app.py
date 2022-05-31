@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = "localhost"
 app.config['MYSQL_USER'] = "root"
-app.config['MYSQL_PASSWORD'] = " "
+app.config['MYSQL_PASSWORD'] = ""
 app.config['MYSQL_DB'] = "expresswrite"
 app.config['MYSQL_CURSORCLASS']='DictCursor'
 app.config['SECRET_KEY'] = " "
@@ -32,34 +32,54 @@ def index1():
     logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
     return render_template("index.html", user_image = logo)
 
+@app.route('/logout')
+def logout():
+   session.pop('name', None)
+   #session['loggedin'] = False
+   return redirect('/')
+
 @app.route("/transagain")
 def transagain():
-   if 'loggedin' in session:
+   if session.get('name'):
       return redirect(url_for('indexuser'))
    else:
-         return render_template("index.html")
+      return render_template("index.html")
 
 @app.route('/indexuser')
 def indexuser():
-   users = session['name']
-   return render_template('indexuser.html', name=users)
+   if session.get('name'):
+      users = session['name']
+      return render_template('indexuser.html', name=users)
+   else:
+      return 'unauthorized access'
 
 @app.route('/profile')
 def profile():
-   if 'loggedin' in session:
-      cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-      cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))
-      account = cursor.fetchone()
-      return render_template('profile.html', account=account)
-   return redirect(url_for('login'))
+   cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+   cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))
+   account = cursor.fetchone()
+   cursor2 = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+   cursor2.execute("SELECT result_text FROM result_table WHERE user_id = %s", (account['id'],))
+   account2 = cursor2.fetchall()
+   b = 0
+
+   listofsavedtrans = []
+   
+   for a in account2:
+      savedtrans = account2[b]
+      listofsavedtrans.append(savedtrans)
+      b = b+1
+   
+   return render_template('profile.html', account=account, account2=listofsavedtrans)
+
 
 #end of button paths
 
-# Login Function  
+# Login Function    
   
 @app.route('/login', methods =['GET', 'POST'])
 def login():
-   if request.method == 'POST':
+    if request.method == 'POST':
         name = request.form['username']
         password = request.form['password'].encode('utf-8')
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -72,7 +92,7 @@ def login():
             return redirect(url_for('indexuser', users=users ))
         else:
             return 'Incorrect username / password !'
-   return render_template('login.html')
+    return render_template('login.html')
 
 # Register Function
 
@@ -91,6 +111,8 @@ def register():
 
 picFolder = os.path.join('static', 'img')
 app.config['UPLOAD_FOLDER'] = picFolder
+	
+# Translation Function
 
 @app.route('/textresult', methods = ['GET', 'POST'])
 def upload_file1():
@@ -195,10 +217,11 @@ group by cumSum
    img = fileList[0]
    w = lineLocations.shape[1]
    segments = pageSegmentation1(img, w, df_SegmentLocations)
-   
+
+# Google CLoud Vision API
+   import os
    from google.cloud import vision
    import io
-   import os
    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/xampp/htdocs/ExpressWrite/JSON File/expresswrite-dd1b301590f7.json"
 
    def CloudVisionTextExtractor(handwritings):
@@ -206,7 +229,7 @@ group by cumSum
       _, encoded_image = cv2.imencode('.png', handwritings)
       content = encoded_image.tobytes()
       image = vision.Image(content=content)
-      
+     
       # feed handwriting image segment to the Google Cloud Vision API
       client = vision.ImageAnnotatorClient()
       response = client.document_text_detection(image=image)
@@ -235,10 +258,11 @@ group by cumSum
       handwrittenText = getTextFromVisionResponse(response)
       listtextCV.append(handwrittenText)
       y = y+1
+      
    else:
       pass
-
-# Pytesseract  
+   
+ # Pytesseract  
 
    import re
    import cv2
@@ -267,9 +291,28 @@ group by cumSum
       text = extractTextFromImg(segment)
       listtextPT.append(text)
       x = x+1
- # render both translations on result.html       
+      
+# render both translations on result.html       
    else:
-      return render_template('result.html', textresultPT = listtextPT, textresultCV = listtextCV)
+      return render_template('result.html', textresultPT = listtextPT, textresultCV = listtextCV) 
+   
+
+@app.route('/savetrans', methods = ['GET', 'POST'])
+def savetrans():
+   if session.get('name'):
+      cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+      cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))
+      account = cursor.fetchone()
+      transCV =  request.form['texttrans']
+      transuserid = account['id']
+      #cur = mysql.connection.cursor()
+      cursor.execute("INSERT INTO result_table(result_text, user_id) VALUES(%s, %s)", (transCV, transuserid))
+      mysql.connection.commit()
+      cursor.close()
+      return render_template('savesuccess.html')
+   
+   else:
+      return "Please login"
 
 if __name__ == '__main__':
    app.run(debug = True)
