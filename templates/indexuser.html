@@ -8,21 +8,21 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}">
     
 <body>
-        <div class="banner">
-            <div class="navbar">
-                <a href="{{ url_for('transagain') }}"><img src="{{url_for('static', filename='img/logo.png')}}" class="logo"></a>
-                <ul>
-                    <li><a href="{{ url_for('profile') }}">Hi, {{ name }}!</a></li>
-                </ul>
-            </div>
+    <div class="banner">
+        <div class="navbar">
+            <a href="{{ url_for('transagain') }}"><img src="{{url_for('static', filename='img/logo.png')}}" class="logo"></a>
+            <ul>
+                <li><a href="{{ url_for('profile') }}">Hi, {{ name }}!</a></li>
+            </ul>
+        </div>
             <div class="content">
                 <h1>ExpressWrite</h1>
                 <p> Recognize handwritten numbers, word and letters with ease. </p>
-        <form action = "/textresult" method = "POST" 
-         enctype = "multipart/form-data">
-         <input type = "file" name = "file" />
-         <input type = "submit"/>
-      </form>   
+            <form action = "/textresult" method = "POST" 
+                enctype = "multipart/form-data">
+                <input type = "file" name = "file" />
+                <input type = "submit"/>
+            </form>   
     </div>
 </body>
 </html>
