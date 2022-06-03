@@ -14,16 +14,11 @@
     {{data}}
         <div class="content">
         <h1>REGISTER</h1>
-            <form method="POST", action="{{url_for('register')}}">
-<<<<<<< HEAD
+                <form method="POST", action="{{url_for('register')}}">
                 <input type="text" id="name" name="name"  placeholder="Username:" required> <br><br>
                 <input type="email" id="email" name="email"  placeholder="Email ID:" required><br><br>
                 <input type="password" id="password "name="password" placeholder="Password:" required><br><br>
-=======
-                <input type="text" id="name" name="name"  placeholder="Username:" required> 
-                <input type="email" id="email" name="email"  placeholder="Email ID:" required>
-                <input type="password" id="password "name="password" placeholder="Password:" required>
->>>>>>> 4c439c5f71fad42e3d782014bec6c00cc38a2fc5
+
                 <input type="submit" class="btn" value="Sign Up"></br>
             </form>
             <a href="{{url_for('login')}}"><br>I have an account</b></a>
