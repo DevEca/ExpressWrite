@@ -97,20 +97,101 @@ a {
   margin-top: 80px;
 }
 .content p{
+  color: #009688;
   margin: 20px auto;
   font-size: 16px;
   font-weight: 100;
   line-height: 25px;
 }
 
-.container h1 label input {
-  font-size: x-large;
-  color: #009688;
+.container {
+  width: 100%;
+  height: 80%;
+  font-family: 'Monserrat' sans-serif;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.b h1 label input a{
-  font-size: x-large;
+.card{
+  width: 350px;
+  height: 400px;
+  background: #009688;
+}
+
+.inner-box{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.card-front, .card-back{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  padding: 55px;
+  box-sizing: border-box;
+}
+
+.card h2{
+  font-weight: bold;
+  font-size: 35px;
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: 20px;
+}
+
+.input-box{
+  width: 100%;
+  background: transparent;
+  border: 1px solid #fff;
+  margin: 6px 0;
+  height: 32px;
+  border-radius: 20px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  outline: none;
+  text-align: center;
+  color: #fff;
+}
+
+::placeholder{
+  color: #fff;
+  font-size: 12px;
+}
+
+a {
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Monserrat' sans-serif;
+  margin-top: 50px;
+  height: 40px;
+  padding: 0 10px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.submit-btn{
+  font-weight: bolder;
+  position: relative;
+  width: 100%;
+  border: 5px solid #fff;
+  margin: 6px 0;
+  height: 32px;
+  border-radius: 20px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  text-align: center;
   color: #009688;
+  cursor: pointer;
+}
+
+a {
+  font-size: 18px;
+  display: flex;
 }
 
 ul {
