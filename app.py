@@ -3,9 +3,9 @@ import os
 from flask import Flask, render_template, request, url_for, session, redirect, flash
 from werkzeug.utils import secure_filename
 from flask import Flask,render_template, request
+from fpdf import FPDF
 from flaskext.mysql import MySQL
 from flask_mysqldb import MySQL
-from fpdf import FPDF
 import mysql
 import MySQLdb.cursors
 import re
