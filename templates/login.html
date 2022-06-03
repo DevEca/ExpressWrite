@@ -5,20 +5,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}">
-    <title>Login</title>
+    <title>ExpressWrite</title>
 </head>
 <body>
-
+    <div class="navbar">
+        <a href="{{ url_for('transagain') }}"><img src="{{url_for('static', filename='img/logo.png')}}" class="logo"></a>
+    </div>
+        <div class="content">
         <h1>Login</h1>
         <form action="{{url_for('login')}}" method="post">
-            <label>Email</label>
-            <input type="email" name="email" id="email" required>
-            <label>Password</label>
-            <input type="password" name="password" id="password" required>
+            
+            <input type="text" name="username" id="username" placeholder="Username" required> <br><br>
+            
+            <input type="password" name="password" id="password"  placeholder="Password" required> <br><br>
             <input type="submit" value="Login">
         </form>
+        {% if error %}
+            <p class=error><strong>Error:</strong> {{ error }}
+        {% endif %}
         <a href="{{url_for('register')}}"><br>Create an account?</b></a>
-
+    </div>        
 
 </body>
 </html>

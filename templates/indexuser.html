@@ -4,29 +4,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>ExpressWrite</title>
-</head>
-
-<body>
     <link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}">
+    
+<body>
         <div class="banner">
             <div class="navbar">
-                <img src="{{url_for('static', filename='img/logo.png')}}" class="logo">
+                <a href="{{ url_for('transagain') }}"><img src="{{url_for('static', filename='img/logo.png')}}" class="logo"></a>
                 <ul>
-                    <li><a href="{{ url_for('register') }}">Register</a></li>
-                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('profile') }}">Hi, {{ name }}!</a></li>
                 </ul>
             </div>
-
             <div class="content">
                 <h1>ExpressWrite</h1>
                 <p> Recognize handwritten numbers, word and letters with ease. </p>
-                <form action = "/textresult" method = "POST" enctype = "multipart/form-data">
-                <input type = "file" name = "file" /><br>
-                <input type = "submit" value="Scan" class="button"/>
-                </form>   
-            </div>
-        </div>    
+        <form action = "/textresult" method = "POST" 
+         enctype = "multipart/form-data">
+         <input type = "file" name = "file" /><br>
+         <input type = "submit" value="Scan"/>
+      </form>   
+    </div>
 </body>
 </html>

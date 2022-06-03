@@ -1,6 +1,6 @@
 from cProfile import run
 import os
-from flask import Flask, render_template, request, url_for, session, redirect
+from flask import Flask, render_template, request, url_for, session, redirect, flash
 from werkzeug.utils import secure_filename
 from flask import Flask,render_template, request
 from flask_mysqldb import MySQL
@@ -8,39 +8,92 @@ import mysql
 import MySQLdb.cursors
 import re
 
+
 app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = "localhost"
 app.config['MYSQL_USER'] = "root"
-app.config['MYSQL_PASSWORD'] = " "
+app.config['MYSQL_PASSWORD'] = ""
 app.config['MYSQL_DB'] = "expresswrite"
 app.config['MYSQL_CURSORCLASS']='DictCursor'
+app.config['SECRET_KEY'] = " "
 
 mysql = MySQL()
 mysql.init_app(app)
 
-@app.route('/')
+#buttons paths:
+
+@app.route('/user_image')
 def index():
     logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
     return render_template("index.html", user_image = logo)
+
+@app.route('/')
+def index1():
+    logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
+    return render_template("index.html", user_image = logo)
+
+@app.route('/logout')
+def logout():
+   session.pop('name', None)
+   #session['loggedin'] = False
+   return redirect('/')
+
+@app.route("/transagain")
+def transagain():
+   if session.get('name'):
+      return redirect(url_for('indexuser'))
+   else:
+      return render_template("index.html")
+
+@app.route('/indexuser')
+def indexuser():
+   if session.get('name'):
+      users = session['name']
+      return render_template('indexuser.html', name=users)
+   else:
+      return redirect(url_for('unauth'))
+
+@app.route('/profile')
+def profile():
+   cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+   cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))
+   account = cursor.fetchone()
+   cursor2 = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+   cursor2.execute("SELECT result_text FROM result_table WHERE user_id = %s", (account['id'],))
+   rows = []
+   for row in cursor2:
+      rows.append(row)
+   return render_template('profile.html', account=account, account2=rows)
+
+@app.route('/unauthorized')
+def unauth():
+    return render_template("unauthorizedacc.html")
+
+#end of button paths
+
+# Login Function    
   
 @app.route('/login', methods =['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        email= request.form['email']
-        password = request.form['password'].encode('utf-8')
-        
-        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cur.execute("SELECT * FROM user WHERE email = %s AND password = %s", (email, password))
-        users = cur.fetchone()
-        cur.close()
-        if users:
-            session['loggedin'] = True
-            session['email'] = users['email']
-            return render_template('index.html')
-        else:
-            return 'Incorrect email / password !'
-    return render_template('login.html')
+   
+   if request.method == 'POST':
+      name = request.form['username']
+      password = request.form['password'].encode('utf-8')
+      cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+      cur.execute("SELECT * FROM user WHERE name = %s AND password = %s", (name, password))
+      users = cur.fetchone()
+      cur.close()
+      if users:
+         session['loggedin'] = True
+         session['name'] = users['name']
+         return redirect(url_for('indexuser', users=users ))
+      else:
+         error = 'incorrect email/password'
+         return render_template('login.html', error=error)
+   return render_template('login.html')
+
+# Register Function
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
@@ -52,18 +105,14 @@ def register():
         cur.execute("INSERT INTO user(name,email,password) VALUES(%s, %s, %s)", (name, email, password))
         mysql.connection.commit()
         cur.close()
-        return render_template('login.html')
+        return render_template('successreg.html')
     return render_template('register.html')
 
 picFolder = os.path.join('static', 'img')
 app.config['UPLOAD_FOLDER'] = picFolder
-
-
-@app.route('/user')
-def user():
-   logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
-   return render_template('user.html', user_image = logo)
 	
+# Translation Function
+
 @app.route('/textresult', methods = ['GET', 'POST'])
 def upload_file1():
    import os
@@ -77,14 +126,11 @@ def upload_file1():
       import pandas as pd, numpy as np
       pd.options.display.float_format = ':,.2f'.format
 
-      from google.cloud import vision
-      import io
-
       import warnings
       warnings.simplefilter("ignore")
 
       import os, cv2
-      os.chdir(r'C:\Users\Lenovo\Desktop\ExpressWrite\uploads')
+      os.chdir(r'C:\xampp\htdocs\ExpressWrite\static\img')
 
       fileList = [x for x in os.listdir() if 'png' in x.lower()]
       fileList[:5]
@@ -171,26 +217,21 @@ group by cumSum
    w = lineLocations.shape[1]
    segments = pageSegmentation1(img, w, df_SegmentLocations)
 
-    
-   import re
-   import cv2
-   import pytesseract
-   from pytesseract import Output
-   
-   import io
+# Google CLoud Vision API
    import os
-   os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/Users/Lenovo/Desktop/ExpressWrite/JSON File/optical-highway-348907-231d2bf0c1d6.json"
+   from google.cloud import vision
+   import io
+   os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/xampp/htdocs/ExpressWrite/JSON File/expresswrite-dd1b301590f7.json"
 
    def CloudVisionTextExtractor(handwritings):
       # convert image from numpy to bytes for submittion to Google Cloud Vision
       _, encoded_image = cv2.imencode('.png', handwritings)
       content = encoded_image.tobytes()
       image = vision.Image(content=content)
-      
+     
       # feed handwriting image segment to the Google Cloud Vision API
       client = vision.ImageAnnotatorClient()
       response = client.document_text_detection(image=image)
-      
       return response
 
    def getTextFromVisionResponse(response):
@@ -203,7 +244,7 @@ group by cumSum
                      texts.append(word_text)
 
       return ' '.join(texts)
-
+# Saving cloud translation into array
    m = 0
    y = 0
 
@@ -216,9 +257,17 @@ group by cumSum
       handwrittenText = getTextFromVisionResponse(response)
       listtextCV.append(handwrittenText)
       y = y+1
+      
    else:
-      return render_template('result.html', textresultCV = listtextCV)
- 
+      pass
+   
+ # Pytesseract  
+
+   import re
+   import cv2
+   import pytesseract
+   from pytesseract import Output
+
 # tell pytesseract where the engine is installed
    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
 
@@ -229,7 +278,7 @@ group by cumSum
         
       return text
 
-
+# Saving pytesseract translation into array
    n = 0
    x = 0
     
@@ -241,15 +290,36 @@ group by cumSum
       text = extractTextFromImg(segment)
       listtextPT.append(text)
       x = x+1
-       
+      
+# render both translations on result.html       
    else:
-      return render_template('result.html', textresultPT = listtextPT)
+      return render_template('result.html', textresultPT = listtextPT, textresultCV = listtextCV) 
+   
+from fpdf import FPDF
 
-  
+@app.route('/savetrans', methods = ['GET', 'POST'])
+def savetrans():
+   if session.get('name'):
+      cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+      cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))
+      account = cursor.fetchone()
+      transCV =  request.form['texttrans']
+      transuserid = account['id']
+      pdf = FPDF()
+      pdf.add_page()
+      pdf.set_font("Arial", size = 15)
+      f = transCV
+      for x in f:
+         pdf.cell(200,10, txt = x, ln = 1, align='C')
+      a = pdf.output("savedtrans.pdf")
+      #cur = mysql.connection.cursor()
+      cursor.execute("INSERT INTO result_table(result_pdf, user_id) VALUES(%s, %s)", (a, transuserid))
+      mysql.connection.commit()
+      cursor.close()
+      return render_template('savesuccess.html')
+   
+   else:
+      return redirect(url_for('unauth'))
 
-@app.route("/", methods=['GET', 'POST'])
-def transagain():
-    if request.method == 'POST':
-      return render_template("index.html")
 if __name__ == '__main__':
    app.run(debug = True)

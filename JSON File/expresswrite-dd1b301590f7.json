@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "expresswrite",
+  "private_key_id": "dd1b301590f76177ea8ac50968f6e0262c58169e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCV4kKOyORJ0eGN\nAY3xv2KLgCAtSJ/0o/RubuBSO4kwJMopETe06IaCzbwi8B48gRWRMnFUk2Ao9T+p\n4DcyK3D+5g/ItKSXcOKyocbm7T7j/zGOsQuc7162a5XBOUOCMnlbr83A+wnHVvi5\n3rqWm87nLwPhtECAu9Y1A778OPtAuzLNO10Ka4OGqXllEMrGEgoDvMRlDTRgtPwI\npbr9T0PlKsLXSps6YlPjnCmq85L4vT7rOQO+bylvZdDfztNw6l/FVDslWBSSxpCg\n6k/dI95y/oANsNY2UZZxyFWcJDr/dx1mCZs3GbkuIDkscJ7ItV7oecL431fYBqv1\n+mK2UmtZAgMBAAECggEASHWY3bRrAPERTHza5WszteMcKyg4BCobKiQ6GCcmHHs8\nrHvhZXkgRi417OIOjAuPpKExPsT8sPBXdcWqiXuM5f3M1afXBkuRnPAu20cIp2qg\nx635wkXKkQAT5tTLOS8zkkq8erYiNRdrqVfu9o6eiQ8mnj/pCxND7F9CPmdBuDnK\nW8kQM/ypp0/lPPw+9hDeQnbzgPyR39vok86SZjG0Ao8yiT9z57gKKO8W2dSvWwL3\nX8bTmSg78ytLI3Yrs4CIMe05Y5mlDpH0/aJN9klFR8s9b/SsvRu7IMDEpzN1Y2o8\nmtbPB2+cUG+PycDlZ/NdQnmqFi3W32TaMJqliPDQHQKBgQDGuUyuUqAr9+SPPtpr\n4wOX9b8Rc0rLe+m9eKHh8s90azrJIqrcS4pRwd61gN3fkkbjkN50lans0h7SSgVG\nX0PLUPA9NxqAV7oa389B1YROaUp545EBFvJCTJ1p+IK11td3xFOETFWS+shn3wX/\ny+h8E/Roc4c7cNIAmj9mtVUHnwKBgQDBFVW6NRWkE25VIUeW86udqwRRGofc5Ttk\nUJf0DfLYKQWteY8ZhmjgW4CUmSxGYPDpbSmXVAxrzG40VeVaaOOYQbN7F4d/fts1\nJDqxAe7dGtY3ikSTLt25D554SerVbUZSbDv18tEck6yfuID8PZJihTdFh7p4CXq+\nLE1H0G0KBwKBgHUyLrDX9bI4fcik7reVqDbkLQyji8a5iz28eOwCAKrN2ltoYI+O\n1UImLaupFjCV2cy3URo8cXxC5v5pvPallBvB3gycBLsQAad7uoU+4MpFejCsLoYP\n/EtxV5x5fMy0qVnupLpvMkB+OdZYRvd2T+Ns+UTobSZ3AMJuNVnjMwRNAoGBAKTm\ndq+wFIpreehEouJ9uszOOMKXeP8j22RiHFR38TXBWzL7xUYUb89k9lxysMhulHGX\nJFU0l+Mc1eXmkhlzySTIv+NZhgRSMB6jkWiI8RpuiBMpCEX3Wa9qcnnjDyc1y0Ar\nZc44kXTpfh1usuI6J6HyifDc6VkJJ4XxShMSI33TAoGAe8bbNV3gLsLVa0Cnf4B0\nvNvV1TkFN7qUQD1XAxPlJjUHNGFXUQNgBKHdvTQK4segVNvOuLo0eFIMuZ0DM1DL\nvzCvsjKUEHG/p2S4sHjA9DvHasu0CQoRn2vyIF4uBnroHqiGVzVOosRSPSl928Vo\nLiunhnw4rZoAwvyz7m4ScDA=\n-----END PRIVATE KEY-----\n",
+  "client_email": "expresswrite@expresswrite.iam.gserviceaccount.com",
+  "client_id": "106673294291966571337",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/expresswrite%40expresswrite.iam.gserviceaccount.com",
+  "imageContext": { "languageHints": ["en-t-i0-handwrit"] }
+}

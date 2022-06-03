@@ -9,10 +9,12 @@ html {
 	font-size: 10px;
 	font-family: 'Montserrat', sans-serif;
 	scroll-behavior: smooth;
-	background-color:rgb(180, 172, 172);
+	background-image: url("/static/img/bg.png");
+  background-size: cover;
 }
 a {
 	text-decoration: none;
+  color: #009688;
 }
 
 /* Header */
@@ -42,7 +44,7 @@ a {
 .banner{
   height: 100vh;
   width: 100%;
-  background-color: rgb(63, 57, 57);
+  /*background-color: rgb(63, 57, 57);*/
 }
 .navbar{
   width: 85%;
@@ -66,7 +68,7 @@ a {
 .navbar ul li a{
   font-size: large;
   text-decoration: none;
-  color: #fff;
+  color: #009688;
   text-transform: uppercase;
 }
 .navbar ul li::after{
@@ -88,7 +90,7 @@ a {
   top: 50%;
   transform: translateY(-50%);
   text-align: center;
-  color: #fff;
+  color: #009688;
 }
 .content h1{
   font-size: 60px;
@@ -103,14 +105,36 @@ a {
 
 .container h1 label input {
   font-size: x-large;
-  color: #fff;
+  color: #009688;
 }
 
 .b h1 label input a{
   font-size: x-large;
-  color: #fff;
+  color: #009688;
 }
 
 ul {
     list-style-type: none;
+}
+
+#resultdiv {
+  text-align: center;
+  align-items: center;
+  padding: 10%;
+}
+
+#title {
+  color: #009688;
+  text-decoration: underline;
+  text-decoration-color: #009688;
+}
+
+input[type=button], input[type=submit], input[type=file] {
+  background-color: #009688;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
 }
