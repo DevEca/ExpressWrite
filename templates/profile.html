@@ -25,7 +25,7 @@
             <p id="title"> Your Saved Translations </p>
             <ul>
                 {% for i in account2: %}
-                <li>{{ i }}   <a href="{{ url_for('.result') }}">Download</a></li>
+                <li>{{ i }}<p><a class="downloadbtn" href="{{ url_for('.result') }}">Download</a></p></li>
                 {% endfor %}
             </ul>
         </div>

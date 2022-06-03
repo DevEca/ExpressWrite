@@ -317,9 +317,12 @@ def savetrans():
 
 @app.route('/result/pdf')
 def result():
-   cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) 
-   cursor.execute("SELECT * FROM result_table")
-   download = cursor.fetchall()
+   cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+   cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))
+   account = cursor.fetchone()
+   cursor2 = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+   cursor2.execute("SELECT result_text FROM result_table WHERE user_id = %s", (account['id'],))
+   download = cursor2.fetchall()
        
    pdf = FPDF()
    pdf.add_page()
@@ -339,7 +342,7 @@ def result():
    th = pdf.font_size
        
    for row in download:
-      pdf.cell(col_width, th, row['result_text'], border=1)
+      pdf.cell(page_width, 0.0, row['result_text'], align='C')
       pdf.ln(th)
 
    pdf.ln(10)

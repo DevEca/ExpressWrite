@@ -219,3 +219,7 @@ input[type=button], input[type=submit], input[type=file] {
   margin: 4px 2px;
   cursor: pointer;
 }
+
+.downloadbtn {
+  color: #009688;
+}
