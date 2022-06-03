@@ -3,7 +3,9 @@ import os
 from flask import Flask, render_template, request, url_for, session, redirect, flash
 from werkzeug.utils import secure_filename
 from flask import Flask,render_template, request
+from flaskext.mysql import MySQL
 from flask_mysqldb import MySQL
+from fpdf import FPDF
 import mysql
 import MySQLdb.cursors
 import re
@@ -312,5 +314,38 @@ def savetrans():
    else:
       return redirect(url_for('unauth'))
 
+@app.route('/download')
+def download_result():
+    try:
+       cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+      
+       cursor.execute("SELECT * FROM result_table")
+       result = cursor.fetchall()
+       
+       pdf = FPDF()
+       pdf.add_page()
+       
+       page_width = pdf.w -2 * pdf.l_margin
+       
+       pdf.set_font('Times', 'B', 14.0)
+       pdf.cell(page_width, 0.0, 'RESULT', align='C')
+       pdf.ln(10)
+       
+       pdf.set_font('Courier', '', 12)
+       
+       col_width = page_width/4
+       
+       pdf.ln(1)
+       
+       th = pdf.font_size
+       
+       for row in result:
+              pdf.cell(col_)
+    except Exception as e:
+      print(e)
+      
+    finally:
+      cursor.close()
+      
 if __name__ == '__main__':
    app.run(debug = True)
