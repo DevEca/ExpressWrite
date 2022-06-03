@@ -26,6 +26,7 @@
    </ul>
    
 
+<<<<<<< HEAD
     
 
    <form action="http://localhost:5000/savetrans" method = "POST" enctype = "multipart/form-data">
@@ -35,6 +36,16 @@
          {% endfor %}
       </textarea><br><br>
       <input type="submit" value="Save Translation" name="savetrans"/>
+=======
+    <textarea id="textresult" name="text result" rows="25" cols="50">
+      {% for n in textresultCV: %}
+      {{ n }}
+      {% endfor %}
+   </textarea><br><br>
+
+   <form action="http://localhost:5000/translation" method = "POST" enctype = "multipart/form-data">
+      <input type="submit" value="Save Translation"/>
+>>>>>>> 4c439c5f71fad42e3d782014bec6c00cc38a2fc5
       </form><br>
       
       <form action="http://localhost:5000/transagain">
