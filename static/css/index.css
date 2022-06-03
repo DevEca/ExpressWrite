@@ -9,7 +9,7 @@ html {
 	font-size: 10px;
 	font-family: 'Montserrat', sans-serif;
 	scroll-behavior: smooth;
-	background-image: url("/static/img/bg.png");
+	background-image: url("/static/img/zbg.png");
   background-size: cover;
 }
 a {
