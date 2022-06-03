@@ -1,6 +1,7 @@
 from cProfile import run
 import os
 from flask import Flask, render_template, request, url_for, session, redirect, flash
+from httplib2 import Response
 from werkzeug.utils import secure_filename
 from flask import Flask,render_template, request
 from fpdf import FPDF
@@ -314,13 +315,13 @@ def savetrans():
    else:
       return redirect(url_for('unauth'))
 
-@app.route('/download')
-def download_result():
-    try:
+@app.route('/result/pdf')
+def result():
+   try:
        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
       
        cursor.execute("SELECT * FROM result_table")
-       result = cursor.fetchall()
+       download = cursor.fetchall()
        
        pdf = FPDF()
        pdf.add_page()
@@ -340,12 +341,20 @@ def download_result():
        th = pdf.font_size
        
        for row in result:
-              pdf.cell(col_)
-    except Exception as e:
+              pdf.cell(col_width, th, row['result_text'], border=1)
+              pdf.ln(th)
+       pdf.ln(10)
+       
+       pdf.set_font('Times','',10.0)
+       pdf.cell(page_width, 0.0, '- end of report -', align ='C')
+    
+       return Response(pdf.output(dest='S').encode('latin-1'), mmimetype='result/pdf', headers={'Content-Disposition':'attachment;filename=result_report.pdf'})
+    
+   except Exception as e:
       print(e)
       
-    finally:
+   finally:
       cursor.close()
-      
+
 if __name__ == '__main__':
    app.run(debug = True)
