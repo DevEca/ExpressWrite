@@ -52,12 +52,8 @@ def indexuser():
       users = session['name']
       return render_template('indexuser.html', name=users)
    else:
-<<<<<<< HEAD
       return redirect(url_for('unauth'))
-=======
-      return 'unauthorized access'
->>>>>>> 4c439c5f71fad42e3d782014bec6c00cc38a2fc5
-
+      
 @app.route('/profile')
 def profile():
    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -65,7 +61,7 @@ def profile():
    account = cursor.fetchone()
    cursor2 = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
    cursor2.execute("SELECT result_text FROM result_table WHERE user_id = %s", (account['id'],))
-<<<<<<< HEAD
+
    rows = []
    for row in cursor2:
       rows.append(row)
@@ -74,20 +70,6 @@ def profile():
 @app.route('/unauthorized')
 def unauth():
     return render_template("unauthorizedacc.html")
-=======
-   account2 = cursor2.fetchall()
-   b = 0
-
-   listofsavedtrans = []
-   
-   for a in account2:
-      savedtrans = account2[b]
-      listofsavedtrans.append(savedtrans)
-      b = b+1
-   
-   return render_template('profile.html', account=account, account2=listofsavedtrans)
-
->>>>>>> 4c439c5f71fad42e3d782014bec6c00cc38a2fc5
 
 #end of button paths
 
@@ -95,7 +77,6 @@ def unauth():
   
 @app.route('/login', methods =['GET', 'POST'])
 def login():
-<<<<<<< HEAD
    
    if request.method == 'POST':
       name = request.form['username']
@@ -112,24 +93,6 @@ def login():
          error = 'incorrect email/password'
          return render_template('login.html', error=error)
    return render_template('login.html')
-
-# Register Function
-=======
-    if request.method == 'POST':
-        name = request.form['username']
-        password = request.form['password'].encode('utf-8')
-        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cur.execute("SELECT * FROM user WHERE name = %s AND password = %s", (name, password))
-        users = cur.fetchone()
-        cur.close()
-        if users:
-            session['loggedin'] = True
-            session['name'] = users['name']
-            return redirect(url_for('indexuser', users=users ))
-        else:
-            return 'Incorrect username / password !'
-    return render_template('login.html')
->>>>>>> 4c439c5f71fad42e3d782014bec6c00cc38a2fc5
 
 # Register Function
 
@@ -332,11 +295,6 @@ group by cumSum
 # render both translations on result.html       
    else:
       return render_template('result.html', textresultPT = listtextPT, textresultCV = listtextCV) 
-   
-<<<<<<< HEAD
-from fpdf import FPDF
-=======
->>>>>>> 4c439c5f71fad42e3d782014bec6c00cc38a2fc5
 
 @app.route('/savetrans', methods = ['GET', 'POST'])
 def savetrans():
@@ -346,30 +304,13 @@ def savetrans():
       account = cursor.fetchone()
       transCV =  request.form['texttrans']
       transuserid = account['id']
-<<<<<<< HEAD
-      pdf = FPDF()
-      pdf.add_page()
-      pdf.set_font("Arial", size = 15)
-      f = transCV
-      for x in f:
-         pdf.cell(200,10, txt = x, ln = 1, align='C')
-      a = pdf.output("savedtrans.pdf")
-      #cur = mysql.connection.cursor()
-      cursor.execute("INSERT INTO result_table(result_pdf, user_id) VALUES(%s, %s)", (a, transuserid))
-=======
-      #cur = mysql.connection.cursor()
       cursor.execute("INSERT INTO result_table(result_text, user_id) VALUES(%s, %s)", (transCV, transuserid))
->>>>>>> 4c439c5f71fad42e3d782014bec6c00cc38a2fc5
       mysql.connection.commit()
       cursor.close()
       return render_template('savesuccess.html')
    
    else:
-<<<<<<< HEAD
       return redirect(url_for('unauth'))
-=======
-      return "Please login"
->>>>>>> 4c439c5f71fad42e3d782014bec6c00cc38a2fc5
 
 if __name__ == '__main__':
    app.run(debug = True)
