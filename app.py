@@ -317,44 +317,36 @@ def savetrans():
 
 @app.route('/result/pdf')
 def result():
-   try:
-       cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-      
-       cursor.execute("SELECT * FROM result_table")
-       download = cursor.fetchall()
+   cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) 
+   cursor.execute("SELECT * FROM result_table")
+   download = cursor.fetchall()
        
-       pdf = FPDF()
-       pdf.add_page()
+   pdf = FPDF()
+   pdf.add_page()
        
-       page_width = pdf.w -2 * pdf.l_margin
+   page_width = pdf.w -2 * pdf.l_margin
        
-       pdf.set_font('Times', 'B', 14.0)
-       pdf.cell(page_width, 0.0, 'RESULT', align='C')
-       pdf.ln(10)
+   pdf.set_font('Times', 'B', 14.0)
+   pdf.cell(page_width, 0.0, 'RESULT', align='C')
+   pdf.ln(10)
        
-       pdf.set_font('Courier', '', 12)
+   pdf.set_font('Courier', '', 12)
        
-       col_width = page_width/4
+   col_width = page_width/1
        
-       pdf.ln(1)
+   pdf.ln(1)
        
-       th = pdf.font_size
+   th = pdf.font_size
        
-       for row in result:
-              pdf.cell(col_width, th, row['result_text'], border=1)
-              pdf.ln(th)
-       pdf.ln(10)
-       
-       pdf.set_font('Times','',10.0)
-       pdf.cell(page_width, 0.0, '- end of report -', align ='C')
-    
-       return Response(pdf.output(dest='S').encode('latin-1'), mmimetype='result/pdf', headers={'Content-Disposition':'attachment;filename=result_report.pdf'})
-    
-   except Exception as e:
-      print(e)
-      
-   finally:
-      cursor.close()
+   for row in download:
+      pdf.cell(col_width, th, row['result_text'], border=1)
+      pdf.ln(th)
 
+   pdf.ln(10)
+       
+   pdf.set_font('Times','',10.0)
+   pdf.cell(page_width, 0.0, '- end of report -', align ='C')
+   pdf.output('result.pdf', 'F')
+   return 'success'
 if __name__ == '__main__':
    app.run(debug = True)
