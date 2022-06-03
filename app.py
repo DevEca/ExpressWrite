@@ -64,11 +64,8 @@ def profile():
    account = cursor.fetchone()
    cursor2 = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
    cursor2.execute("SELECT result_text FROM result_table WHERE user_id = %s", (account['id'],))
-
-   rows = []
-   for row in cursor2:
-      rows.append(row)
-   return render_template('profile.html', account=account, account2=rows)
+   account2 = cursor2.fetchall()
+   return render_template('profile.html', account=account, account2=account2)
 
 @app.route('/unauthorized')
 def unauth():
