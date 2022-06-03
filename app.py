@@ -1,6 +1,6 @@
 from cProfile import run
 import os
-from flask import Flask, render_template, request, url_for, session, redirect
+from flask import Flask, render_template, request, url_for, session, redirect, flash
 from werkzeug.utils import secure_filename
 from flask import Flask,render_template, request
 from flaskext.mysql import MySQL
@@ -9,6 +9,7 @@ from fpdf import FPDF
 import mysql
 import MySQLdb.cursors
 import re
+
 
 app = Flask(__name__)
 
@@ -53,8 +54,8 @@ def indexuser():
       users = session['name']
       return render_template('indexuser.html', name=users)
    else:
-      return 'unauthorized access'
-
+      return redirect(url_for('unauth'))
+      
 @app.route('/profile')
 def profile():
    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -62,18 +63,15 @@ def profile():
    account = cursor.fetchone()
    cursor2 = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
    cursor2.execute("SELECT result_text FROM result_table WHERE user_id = %s", (account['id'],))
-   account2 = cursor2.fetchall()
-   b = 0
 
-   listofsavedtrans = []
-   
-   for a in account2:
-      savedtrans = account2[b]
-      listofsavedtrans.append(savedtrans)
-      b = b+1
-   
-   return render_template('profile.html', account=account, account2=listofsavedtrans)
+   rows = []
+   for row in cursor2:
+      rows.append(row)
+   return render_template('profile.html', account=account, account2=rows)
 
+@app.route('/unauthorized')
+def unauth():
+    return render_template("unauthorizedacc.html")
 
 #end of button paths
 
@@ -81,20 +79,22 @@ def profile():
   
 @app.route('/login', methods =['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        name = request.form['username']
-        password = request.form['password'].encode('utf-8')
-        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cur.execute("SELECT * FROM user WHERE name = %s AND password = %s", (name, password))
-        users = cur.fetchone()
-        cur.close()
-        if users:
-            session['loggedin'] = True
-            session['name'] = users['name']
-            return redirect(url_for('indexuser', users=users ))
-        else:
-            return 'Incorrect username / password !'
-    return render_template('login.html')
+   
+   if request.method == 'POST':
+      name = request.form['username']
+      password = request.form['password'].encode('utf-8')
+      cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+      cur.execute("SELECT * FROM user WHERE name = %s AND password = %s", (name, password))
+      users = cur.fetchone()
+      cur.close()
+      if users:
+         session['loggedin'] = True
+         session['name'] = users['name']
+         return redirect(url_for('indexuser', users=users ))
+      else:
+         error = 'incorrect email/password'
+         return render_template('login.html', error=error)
+   return render_template('login.html')
 
 # Register Function
 
@@ -297,7 +297,6 @@ group by cumSum
 # render both translations on result.html       
    else:
       return render_template('result.html', textresultPT = listtextPT, textresultCV = listtextCV) 
-   
 
 @app.route('/savetrans', methods = ['GET', 'POST'])
 def savetrans():
@@ -307,14 +306,13 @@ def savetrans():
       account = cursor.fetchone()
       transCV =  request.form['texttrans']
       transuserid = account['id']
-      #cur = mysql.connection.cursor()
       cursor.execute("INSERT INTO result_table(result_text, user_id) VALUES(%s, %s)", (transCV, transuserid))
       mysql.connection.commit()
       cursor.close()
       return render_template('savesuccess.html')
    
    else:
-      return "Please login"
+      return redirect(url_for('unauth'))
 
 @app.route('/download')
 def download_result():

@@ -25,15 +25,13 @@
       {% endfor %}
    </ul>
    
-
-    <textarea id="textresult" name="text result" rows="25" cols="50">
-      {% for n in textresultCV: %}
-      {{ n }}
-      {% endfor %}
-   </textarea><br><br>
-
-   <form action="http://localhost:5000/translation" method = "POST" enctype = "multipart/form-data">
-      <input type="submit" value="Save Translation"/>
+   <form action="http://localhost:5000/savetrans" method = "POST" enctype = "multipart/form-data">
+      <textarea id="textresult" name="texttrans" rows="25" cols="50">
+         {% for n in textresultCV: %}
+         {{ n }}
+         {% endfor %}
+      </textarea><br><br>
+      <input type="submit" value="Save Translation" name="savetrans"/>
       </form><br>
       
       <form action="http://localhost:5000/transagain">
