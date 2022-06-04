@@ -12,9 +12,10 @@ html {
 	background-image: url("/static/img/zbg.png");
   background-size: cover;
 }
-a {
+.link {
 	text-decoration: none;
-  color: #009688;
+  color: #FFF;
+  display: flex;
 }
 
 /* Header */
@@ -57,6 +58,7 @@ a {
 .logo{
   top: 0;
   width: 50px;
+  height: 50px;
   cursor: pointer;
 }
 .navbar ul li{
@@ -117,14 +119,13 @@ a {
 }
 
 .savedtrans{
-  width: 100%;
+  width: 80%;
   height: min-content;
   position: absolute;
   top: 60%;
-  
- 
+  left: 10%;
   color: #009688;
-  
+  align-items: center;
 }
 
 .savedtrans p{
@@ -133,7 +134,7 @@ a {
   font-size: 16px;
   font-weight: 100;
   line-height: 25px;
-  text-align:center;
+  text-align: center;
 }
 
 .content h1{
@@ -207,17 +208,6 @@ a {
   font-size: 12px;
 }
 
-a {
-  color: #009688;
-  font-size: 14px;
-  font-family: 'Monserrat' sans-serif;
-  margin-top: 50px;
-  height: 40px;
-  padding: 0 10px;
-  color: #009688;
-  cursor: pointer;
-}
-
 .submit-btn{
   font-weight: bolder;
   position: relative;
@@ -231,11 +221,6 @@ a {
   text-align: center;
   color: #009688;
   cursor: pointer;
-}
-
-a {
-  font-size: 18px;
-  display: flex;
 }
 
 ul {
