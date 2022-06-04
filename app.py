@@ -366,6 +366,15 @@ def result():
    pdf.cell(page_width, 0.0, '- end of report -', align ='C')
    pdf.output('result.pdf', 'F')
    return 'success'
+	 
+@app.route('/offline.html')
+def offline():
+    return app.send_static_file('offline.html')
 
+
+@app.route('/service-worker.js')
+def sw():
+    return app.send_static_file('service-worker.js')
+ 
 if __name__ == '__main__':
    app.run(debug = True)
