@@ -11,11 +11,15 @@
     <div class="banner">
         <div class="navbar">
             <a href="{{ url_for('transagain') }}"><img src="{{url_for('static', filename='img/logo.png')}}" class="logo"></a>
+            <ul>
+                <li><a href="{{ url_for('register') }}">Register</a></li>
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+            </ul>
         </div>
 
         <div class="content">
             <h1>Unauthorized Access</h1>
-            <p> Please <a href="{{url_for('login')}}">Login</a></p>
+            <p> Please Login</p>
                
         </div>
     </div>

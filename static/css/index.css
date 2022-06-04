@@ -84,6 +84,7 @@ a {
 .navbar ul li:hover::after{
   width: 100%;
 }
+
 .content{
   width: 100%;
   position: absolute;
@@ -92,6 +93,49 @@ a {
   text-align: center;
   color: #009688;
 }
+
+.profile{
+  width: 100%;
+  position: absolute;
+  top: 20%;
+ 
+  text-align: center;
+  color: #009688;
+}
+
+.profile p{
+  color: #009688;
+  margin: 20px auto;
+  font-size: 16px;
+  font-weight: 100;
+  line-height: 25px;
+}
+
+.profile h1{
+  font-size: 60px;
+  margin-top: 80px;
+}
+
+.savedtrans{
+  width: 100%;
+  height: min-content;
+  position: absolute;
+  top: 60%;
+  
+ 
+  color: #009688;
+  
+}
+
+.savedtrans p{
+  color: #009688;
+  margin: 20px auto;
+  font-size: 16px;
+  font-weight: 100;
+  line-height: 25px;
+  text-align:center;
+}
+
 .content h1{
   font-size: 60px;
   margin-top: 80px;
@@ -164,13 +208,13 @@ a {
 }
 
 a {
-  color: #fff;
+  color: #009688;
   font-size: 14px;
   font-family: 'Monserrat' sans-serif;
   margin-top: 50px;
   height: 40px;
   padding: 0 10px;
-  color: #fff;
+  color: #009688;
   cursor: pointer;
 }
 
@@ -222,4 +266,9 @@ input[type=button], input[type=submit], input[type=file] {
 
 .downloadbtn {
   color: #009688;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
 }

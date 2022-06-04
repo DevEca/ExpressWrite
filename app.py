@@ -29,6 +29,11 @@ mysql.init_app(app)
 @app.route('/user_image')
 def index():
     logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
+    import os
+    if os.path.exists("static/img/img_00.png"):
+       os.remove("img_00.png")
+    else:
+       pass
     return render_template("index.html", user_image = logo)
 
 @app.route('/')
@@ -39,14 +44,26 @@ def index1():
 @app.route('/logout')
 def logout():
    session.pop('name', None)
+   if session.get('name'):
+      import os
+      if os.path.exists("static/img/img_00.png"):
+       os.remove("static/img/img_00.png")
+      else:
+       pass
    #session['loggedin'] = False
    return redirect('/')
 
-@app.route("/transagain")
+@app.route("/index")
 def transagain():
    if session.get('name'):
+      import os
+      if os.path.exists("C:/xampp/htdocs/ExpressWrite/static/img/img_00.png"):
+         os.remove("C:/xampp/htdocs/ExpressWrite/static/img/img_00.png")
       return redirect(url_for('indexuser'))
    else:
+      import os
+      if os.path.exists("C:/xampp/htdocs/ExpressWrite/static/img/img_00.png"):
+         os.remove("C:/xampp/htdocs/ExpressWrite/static/img/img_00.png")
       return render_template("index.html")
 
 @app.route('/indexuser')
@@ -63,7 +80,7 @@ def profile():
    cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))
    account = cursor.fetchone()
    cursor2 = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-   cursor2.execute("SELECT result_text FROM result_table WHERE user_id = %s", (account['id'],))
+   cursor2.execute("SELECT * FROM result_table WHERE user_id = %s", (account['id'],))
    account2 = cursor2.fetchall()
    return render_template('profile.html', account=account, account2=account2)
 
@@ -90,7 +107,7 @@ def login():
          session['name'] = users['name']
          return redirect(url_for('indexuser', users=users ))
       else:
-         error = 'incorrect email/password'
+         error = 'incorrect username/password'
          return render_template('login.html', error=error)
    return render_template('login.html')
 
@@ -312,15 +329,16 @@ def savetrans():
    else:
       return redirect(url_for('unauth'))
 
-@app.route('/result/pdf')
+
+@app.route('/result/pdf', methods = ['GET', 'POST'])
 def result():
    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
    cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))
    account = cursor.fetchone()
    cursor2 = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-   cursor2.execute("SELECT result_text FROM result_table WHERE user_id = %s", (account['id'],))
-   download = cursor2.fetchall()
-       
+   id = request.form['id']
+   cursor2.execute("SELECT result_text FROM result_table WHERE result_id = %s", [id])
+   download = cursor2.fetchall()    
    pdf = FPDF()
    pdf.add_page()
        
@@ -339,8 +357,8 @@ def result():
    th = pdf.font_size
        
    for row in download:
-      pdf.cell(page_width, 0.0, row['result_text'], align='C')
-      pdf.ln(th)
+      pdf.cell(0, 0.0, row['result_text'])
+      pdf.ln(1)
 
    pdf.ln(10)
        
@@ -348,5 +366,6 @@ def result():
    pdf.cell(page_width, 0.0, '- end of report -', align ='C')
    pdf.output('result.pdf', 'F')
    return 'success'
+
 if __name__ == '__main__':
    app.run(debug = True)

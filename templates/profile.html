@@ -16,17 +16,28 @@
             </ul>
         </div>
 
-        <div class="content">
+        <div class="profile">
             <h1>Profile</h1>
             <p id="title"> Your Account Details </p>
             <p>Username: {{ account['name'] }}</p>
-            <p>Email: {{ account['email'] }}</p>
+            <p>Email: {{ account['email'] }}</p>   
+            
+        </div>
+        <div class="savedtrans"> 
             <p id="title"> Your Saved Translations </p>
-            <ul>
+            <table>
                 {% for i in account2: %}
-                <li>{{ i['result_text'] }}<p><a class="downloadbtn" href="{{ url_for('.result') }}">Download</a></p></li>
+                <tr>
+                    <td>
+                        <form action="{{url_for('.result')}}" method="post">
+                            <textarea hidden name="id" >{{i['result_id']}}</textarea>
+                             <p>{{ i['result_text'] }}</p></td><td>
+                             <input type="submit" name="dl" value="Download"/>
+                         </form>
+                    </td>
+                </tr>
                 {% endfor %}
-            </ul>
+            </table>
         </div>
     </div>
 </body>

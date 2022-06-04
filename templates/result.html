@@ -34,7 +34,7 @@
       <input type="submit" value="Save Translation" name="savetrans"/>
       </form><br>
       
-      <form action="http://localhost:5000/transagain">
+      <form action="{{ url_for('transagain') }}">
       <input type="submit" value="Translate Again" name="transagain"/>
       </form>
    </div>
