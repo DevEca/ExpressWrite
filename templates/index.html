@@ -10,7 +10,7 @@
 <body>
         <div class="banner">
             <div class="navbar">
-                <img src="{{url_for('static', filename='img/logo.png')}}" class="logo">
+                <a href="{{ url_for('transagain') }}"><img src="{{url_for('static', filename='img/logo.png')}}" class="logo"></a>
                 <ul>
                     <li><a href="{{ url_for('register') }}">Register</a></li>
                     <li><a href="{{ url_for('login') }}">Login</a></li>
@@ -21,7 +21,7 @@
                 
                 <p> Recognize handwritten numbers, word and letters with ease. </p>
                 <form action = "/textresult" method = "POST" enctype = "multipart/form-data">
-                <input type = "file" name = "file" />
+                <input type = "file" name = "file" /><br>
                 <input type = "submit"/>
                 </form> 
             </div> 
