@@ -320,13 +320,7 @@ group by cumSum
 
 @app.route('/savetrans', methods = ['GET', 'POST'])
 def savetrans():
-   if session.get('name') == 0:
-    return redirect(url_for('unauth'))
-   
-   cursor2 = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-   cursor2.execute("SELECT * FROM user")
-   users = cursor2.fetchall()
-   
+   N = 0
    if session.get('name'):
       cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
       cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))
@@ -337,7 +331,9 @@ def savetrans():
       mysql.connection.commit()
       cursor.close()
       return render_template('savesuccess.html')
-   return render_template('savesuccess.html')
+   
+   else:
+      return redirect(url_for('unauth'))
    
   
 
