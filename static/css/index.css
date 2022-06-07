@@ -12,6 +12,12 @@ html {
 	background-image: url("/static/img/zbg.png");
   background-size: cover;
 }
+
+a {
+  text-decoration: none;
+  display:flex;
+}
+
 .link {
 	text-decoration: none;
   color: #FFF;

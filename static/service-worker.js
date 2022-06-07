@@ -8,7 +8,8 @@ const filesToCache = [
     '/',
     '/static/app.js',
     '/static/css/index.css',
-    '/static/img/logo.png'
+    '/static/img/logo.png',
+    '/static/img/zbg.png'
 ];
 
 

@@ -2,7 +2,7 @@
     "name": "Express Write (PWA)",
     "short_name": "Express Write",
     "theme_color": "#34A5DA",
-    "background_color": "#FFFFFF",
+    
     "icons": [
         {
           "src": "/static/img/logo.png",
