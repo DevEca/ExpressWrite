@@ -38,8 +38,9 @@ def index():
 
 @app.route('/')
 def index1():
-    logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
-    return render_template("index.html", user_image = logo)
+   
+   logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
+   return redirect('/index')
 
 @app.route('/logout')
 def logout():
@@ -51,7 +52,7 @@ def logout():
       else:
        pass
    #session['loggedin'] = False
-   return redirect('/')
+   return redirect('/index')
 
 @app.route("/index")
 def transagain():
@@ -102,14 +103,18 @@ def login():
       cur.execute("SELECT * FROM user WHERE name = %s AND password = %s", (name, password))
       users = cur.fetchone()
       cur.close()
-      if users:
-         session['loggedin'] = True
-         session['name'] = users['name']
-         return redirect(url_for('indexuser', users=users ))
-      else:
+
+      if users == 0:
          error = 'incorrect username/password'
          return render_template('login.html', error=error)
+
+      session['loggedin'] = True
+      session['name'] = users['name']
+      return redirect(url_for('indexuser', users=users ))
    return render_template('login.html')
+      
+         
+   
 
 # Register Function
 
@@ -315,6 +320,13 @@ group by cumSum
 
 @app.route('/savetrans', methods = ['GET', 'POST'])
 def savetrans():
+   if session.get('name') == 0:
+    return redirect(url_for('unauth'))
+   
+   cursor2 = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+   cursor2.execute("SELECT * FROM user")
+   users = cursor2.fetchall()
+   
    if session.get('name'):
       cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
       cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))
@@ -325,10 +337,9 @@ def savetrans():
       mysql.connection.commit()
       cursor.close()
       return render_template('savesuccess.html')
+   return render_template('savesuccess.html')
    
-   else:
-      return redirect(url_for('unauth'))
-
+  
 
 @app.route('/result/pdf', methods = ['GET', 'POST'])
 def result():

@@ -8,7 +8,7 @@
       <div class="navbar">
          <a href="{{ url_for('transagain') }}"><img src="{{url_for('static', filename='img/logo.png')}}" class="logo"></a>
      </div>
-   <div id="resultdiv">
+   <div class="content">
       
    <h1>Your writing means...</h1>
    <h3>Pytesseract</h3>
@@ -24,7 +24,6 @@
       <li>{{ n }}</li>
       {% endfor %}
    </ul>
-   
    <form action="http://localhost:5000/savetrans" method = "POST" enctype = "multipart/form-data">
       <textarea id="textresult" name="texttrans" rows="25" cols="50">
          {% for n in textresultCV: %}

@@ -22,7 +22,7 @@
 <body>
         <div class="banner">
             <div class="navbar">
-                <img src="{{url_for('static', filename='img/logo.png')}}" class="logo">
+                <a href="{{ url_for('transagain') }}"><img src="{{url_for('static', filename='img/logo.png')}}" class="logo"></a>
                 <ul id = "users">
                     <li><a href="{{ url_for('register') }}">Register</a></li>
                     <li><a href="{{ url_for('login') }}">Login</a></li>
