@@ -254,7 +254,7 @@ group by cumSum
      
       # feed handwriting image segment to the Google Cloud Vision API
       client = vision.ImageAnnotatorClient()
-      response = client.document_text_detection(image=image)
+      response = client.document_text_detection(image=image,image_context={"language_hints": ["en"]})
       return response
 
    def getTextFromVisionResponse(response):
@@ -321,6 +321,7 @@ group by cumSum
 @app.route('/savetrans', methods = ['GET', 'POST'])
 def savetrans():
    N = 0
+   m = 0
    if session.get('name'):
       cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
       cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))
