@@ -340,13 +340,8 @@ def savetrans():
 
 @app.route('/result/pdf', methods = ['GET', 'POST'])
 def result():
-   cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-   cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))
-   account = cursor.fetchone()
-   cursor2 = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-   id = request.form['id']
-   cursor2.execute("SELECT result_text FROM result_table WHERE result_id = %s", [id])
-   download = cursor2.fetchall()    
+   result = request.form['result']    
+
    pdf = FPDF()
    pdf.add_page()
        
@@ -360,20 +355,18 @@ def result():
        
    col_width = page_width/1
        
-   pdf.ln(1)
+   pdf.ln(10)
        
    th = pdf.font_size
-       
-   for row in download:
-      pdf.cell(0, 0.0, row['result_text'])
-      pdf.ln(1)
 
+      
+   pdf.multi_cell(0, 5, result)
    pdf.ln(10)
        
    pdf.set_font('Times','',10.0)
    pdf.cell(page_width, 0.0, '- end of report -', align ='C')
    pdf.output('result.pdf', 'F')
-   return 'success'
+   return render_template('savesuccess.html')
 	 
 @app.route('/offline.html')
 def offline():
