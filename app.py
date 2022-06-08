@@ -40,7 +40,7 @@ def index():
 def index1():
    
    logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
-   return redirect('/index')
+   return redirect(url_for('index'))
 
 @app.route('/logout')
 def logout():
@@ -142,6 +142,7 @@ def upload_file1():
    if request.method == 'POST':
       f = request.files['file']
       filename = secure_filename(f.filename)
+      import os
       f.save(os.path.join(app.config['UPLOAD_FOLDER'], 'img_00.png'))
 
       from IPython.display import Image
@@ -254,7 +255,7 @@ group by cumSum
      
       # feed handwriting image segment to the Google Cloud Vision API
       client = vision.ImageAnnotatorClient()
-      response = client.document_text_detection(image=image,image_context={"language_hints": ["en"]})
+      response = client.document_text_detection(image=image,image_context= {"language_hints": ["en"]})
       return response
 
    def getTextFromVisionResponse(response):
@@ -321,7 +322,6 @@ group by cumSum
 @app.route('/savetrans', methods = ['GET', 'POST'])
 def savetrans():
    N = 0
-   m = 0
    if session.get('name'):
       cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
       cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))

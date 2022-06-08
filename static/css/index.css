@@ -102,11 +102,19 @@ a {
   color: #009688;
 }
 
+.resultcontent{
+  width: 100%;
+  
+  top: 65%;
+  align-items: center;
+  text-align: center;
+  color: #009688;
+}
+
 .profile{
   width: 100%;
   position: absolute;
   top: 20%;
- 
   text-align: center;
   color: #009688;
 }

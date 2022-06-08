@@ -7,6 +7,7 @@
    <body>
       <div class="navbar">
          <a href="{{ url_for('transagain') }}"><img src="{{url_for('static', filename='img/logo.png')}}" class="logo"></a>
+         <br>
      </div>
    <div class="content">
       
@@ -25,13 +26,13 @@
       {% endfor %}
    </ul>
    <form action="http://localhost:5000/savetrans" method = "POST" enctype = "multipart/form-data">
-      <textarea id="textresult" name="texttrans" rows="25" cols="50">
+      <textarea id="textresult" name="texttrans" rows="20" cols="50">
          {% for n in textresultCV: %}
          {{ n }}
          {% endfor %}
       </textarea><br><br>
       <input type="submit" value="Save Translation" name="savetrans"/>
-      </form><br>
+      </form>
       
       <form action="{{ url_for('transagain') }}">
       <input type="submit" value="Translate Again" name="transagain"/>
