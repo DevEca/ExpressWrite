@@ -12,19 +12,7 @@
    <div class="content">
       
    <h1>Your writing means...</h1>
-   <h3>Pytesseract</h3>
-   <ul>
-      {% for i in textresultPT: %}
-      <li>{{ i }}</li>
-      {% endfor %}
-   </ul>
-
-   <h3>Cloud Vision</h3>
-   <ul>
-      {% for n in textresultCV: %}
-      <li>{{ n }}</li>
-      {% endfor %}
-   </ul>
+   
    <form action="http://localhost:5000/savetrans" method = "POST" enctype = "multipart/form-data">
       <textarea id="textresult" name="texttrans" rows="20" cols="50">
          {% for n in textresultCV: %}
