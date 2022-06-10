@@ -114,7 +114,7 @@ def savepass():
       elif users['password'] == password:
          cur.execute("UPDATE user SET password = %s WHERE id = %s", (newpass, users['id']))
          mysql.connection.commit()
-         return render_template('savesuccess.html')
+         return render_template('changesuccess.html')
      
       else:      
          error = 'incorrect old password'
@@ -159,16 +159,29 @@ def login():
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
-    if request.method =='POST':
-        name = request.form['name']
-        email = request.form['email']
-        password = request.form['password']
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO user(name,email,password) VALUES(%s, %s, %s)", (name, email, password))
-        mysql.connection.commit()
-        cur.close()
-        return render_template('successreg.html')
-    return render_template('register.html')
+      
+      if request.method =='POST':
+         error = None
+         name = request.form['name']
+         email = request.form['email']
+         password = request.form['password']
+
+         cur1 = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+         cur1.execute("SELECT * FROM user WHERE name = %s", [name])
+         users1 = cur1.fetchone()
+      
+
+         if users1:
+            error = 'username already registered'
+            return render_template('register.html', error=error)
+
+         else:
+            
+            cur1.execute("INSERT INTO user(name,email,password) VALUES(%s, %s, %s)", (name, email, password))
+            mysql.connection.commit()
+            cur1.close()
+            return render_template('successreg.html')
+      return render_template('register.html')
 
 picFolder = os.path.join('static', 'img')
 app.config['UPLOAD_FOLDER'] = picFolder
