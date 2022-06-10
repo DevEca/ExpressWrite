@@ -40,7 +40,7 @@ def index():
 def index1():
    
    logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
-   return redirect(url_for('index'))
+   return render_template("index.html", user_image = logo)
 
 @app.route('/logout')
 def logout():
@@ -283,45 +283,11 @@ group by cumSum
       y = y+1
       
    else:
-      pass
-   
- # Pytesseract  
-
-   import re
-   import cv2
-   import pytesseract
-   from pytesseract import Output
-
-# tell pytesseract where the engine is installed
-   pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
-
-
-   def extractTextFromImg(segment):
-      text = pytesseract.image_to_string(segment, lang='eng')         
-      text = text.encode("gbk", 'ignore').decode("gbk", "ignore")
-        
-      return text
-
-# Saving pytesseract translation into array
-   n = 0
-   x = 0
-    
-   listtextPT = []
-   
-   for n in segments:
-    
-      segment = segments[x]
-      text = extractTextFromImg(segment)
-      listtextPT.append(text)
-      x = x+1
-      
-# render both translations on result.html       
-   else:
-      return render_template('result.html', textresultPT = listtextPT, textresultCV = listtextCV) 
+      return render_template('result.html', textresultCV = listtextCV) 
 
 @app.route('/savetrans', methods = ['GET', 'POST'])
 def savetrans():
-   N = 0
+   
    if session.get('name'):
       cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
       cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))
