@@ -89,6 +89,40 @@ def profile():
 def unauth():
     return render_template("unauthorizedacc.html")
 
+@app.route('/changepass')
+def changepass():
+   
+   return render_template("changepass.html")
+
+@app.route('/savepass', methods =['GET', 'POST'])
+def savepass():
+   error = None
+   if request.method == 'POST':
+      password = request.form['password'].encode('utf-8')
+      newpass = request.form['newpass']
+      matchpass = request.form['matchpass']
+      cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+      cur.execute("SELECT * FROM user WHERE password = %s", [password])
+      users = cur.fetchone()
+      
+
+      if users['password'] == newpass:
+         error = 'same password in current'
+         return render_template('changepass.html', error=error)
+
+      elif newpass == matchpass:
+         cur.execute("UPDATE user SET password = %s WHERE id = %s", (newpass, users['id']))
+         mysql.connection.commit()
+         return render_template('savesuccess.html')
+
+      else:
+         error = 'new password did not match'
+         return render_template('changepass.html', error=error)
+
+      
+      
+  
+
 #end of button paths
 
 # Login Function    
@@ -157,7 +191,7 @@ def upload_file1():
       import os, cv2
       os.chdir(r'C:\xampp\htdocs\ExpressWrite\static\img')
 
-      fileList = [x for x in os.listdir() if 'png' in x.lower()]
+      fileList = [x for x in os.listdir() if 'png' or 'jpg' in x.lower()]
       fileList[:5]
 
       Image(filename = fileList[0], width = 300)

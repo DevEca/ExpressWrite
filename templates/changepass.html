@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}">
+    <title>ExpressWrite</title>
+</head>
+<body>
+    <div class="banner">
+        <div class="navbar">
+            <a href="{{ url_for('transagain') }}"><img src="{{url_for('static', filename='img/logo.png')}}" class="logo"></a>
+        </div>
+
+        <div class="container">
+            <div class="card">
+                <div class="inner-box">
+                    <div class="card-front">
+                        <h2>LOGIN</h2>
+                        <form action="{{url_for('savepass')}}" method="post">
+                            <input type="password" class="input-box" name="password" id="password" placeholder="Old Password" required>
+                            <input type="password" class="input-box" name="newpass" id="newpass" placeholder="New Password" required>
+                            <input type="password" class="input-box" name="matchpass" id="matchpass" placeholder="Enter Again" required>
+                            <button type="submit" class="submit-btn">Change Password</button>
+                        </form>
+
+                        {% if error %}
+                       <p>{{error}}</p>
+                       {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

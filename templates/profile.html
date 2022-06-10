@@ -20,7 +20,8 @@
             <h1>Profile</h1>
             <p id="title"> Your Account Details </p>
             <p>Username: {{ account['name'] }}</p>
-            <p>Email: {{ account['email'] }}</p>   
+            <p>Email: {{ account['email'] }} </p>
+            <p><a  href="{{ url_for('changepass') }}"> Change Password </a></p>
             
         </div>
         <div class="savedtrans"> 

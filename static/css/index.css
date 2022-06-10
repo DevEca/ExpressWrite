@@ -113,6 +113,7 @@ a {
 
 .profile{
   width: 100%;
+  height: min-content;
   position: absolute;
   top: 20%;
   text-align: center;
@@ -136,7 +137,7 @@ a {
   width: 80%;
   height: min-content;
   position: absolute;
-  top: 60%;
+  top: 55%;
   left: 10%;
   color: #009688;
   align-items: center;
