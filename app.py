@@ -107,14 +107,18 @@ def savepass():
       users = cur.fetchone()
       
 
-      if users['password'] == newpass:
+      if users == newpass:
          error = 'same password in current'
          return render_template('changepass.html', error=error)
 
-      elif newpass == matchpass:
-         cur.execute("UPDATE user SET password = %s WHERE id = %s", (newpass, users['id']))
-         mysql.connection.commit()
-         return render_template('savesuccess.html')
+      elif users == password:
+         if newpass == matchpass:
+            cur.execute("UPDATE user SET password = %s WHERE id = %s", (newpass, users['id']))
+            mysql.connection.commit()
+            return render_template('savesuccess.html')
+         else:
+            error = 'incorrect old password'
+            return render_template('changepass.html', error=error)
 
       else:
          error = 'new password did not match'
@@ -304,8 +308,9 @@ group by cumSum
                      texts.append(word_text)
 
       return ' '.join(texts)
+      
 # Saving cloud translation into array
-   m = 0
+   
    y = 0
 
    listtextCV = []
