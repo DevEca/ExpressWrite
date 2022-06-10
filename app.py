@@ -107,7 +107,7 @@ def savepass():
       users = cur.fetchone()
       
 
-      if users['password'] == newpass:
+      if users['password'] == newpass and users['password'] == password:
          error = 'same password in current'
          return render_template('changepass.html', error=error)
 
