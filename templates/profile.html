@@ -31,9 +31,14 @@
                 <tr>
                     <td>
                         <form action="{{url_for('.result')}}" method="post">
-                            <textarea hidden name="id" >{{i['result_id']}}</textarea>
+                            
                              <textarea name="result" rows="5" cols="50">{{ i['result_text'] }}</textarea></td><td>
                              <input type="submit" name="dl" value="Download"/>
+                             
+                         </form></td><td>
+                         <form action="{{url_for('deletetrans')}}" method="post">
+                            <textarea hidden name="resultid" >{{i['result_id']}}</textarea>
+                             <input type="submit" name="deletetrans" value="Delete"/>
                          </form>
                     </td>
                 </tr>

@@ -370,6 +370,14 @@ def result():
    response.headers.set('Content-Disposition', 'attachment',filename='result.pdf')
    response.headers.set('Content-Type', 'application/pdf')
    return response
+
+@app.route('/delete', methods = ['GET', 'POST'])
+def deletetrans():
+   resultid = request.form['resultid']
+   cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+   cursor.execute('DELETE FROM result_table WHERE result_id = %s', [resultid])
+   mysql.connection.commit()
+   return redirect(url_for('profile'))
 	 
 @app.route('/offline.html')
 def offline():
