@@ -1,6 +1,6 @@
 from cProfile import run
 import os
-from flask import Flask, render_template, request, url_for, session, redirect, flash
+from flask import Flask, render_template, request, url_for, session, redirect, flash, make_response
 from httplib2 import Response
 from werkzeug.utils import secure_filename
 from flask import Flask,render_template, request
@@ -366,8 +366,10 @@ def result():
        
    pdf.set_font('Times','',10.0)
    pdf.cell(page_width, 0.0, '- end of report -', align ='C')
-   pdf.output('result.pdf', 'F')
-   return render_template('savesuccess.html')
+   response = make_response(pdf.output(dest='S').encode('latin-1'))
+   response.headers.set('Content-Disposition', 'attachment',filename='result.pdf')
+   response.headers.set('Content-Type', 'application/pdf')
+   return response
 	 
 @app.route('/offline.html')
 def offline():
