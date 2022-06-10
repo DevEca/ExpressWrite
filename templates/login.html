@@ -23,7 +23,10 @@
                             <input type="password" class="input-box" name="password" id="password" placeholder="Password" required>
                             <button type="submit" class="submit-btn">Sign In</button>
                         </form>
-                       
+
+                        {% if error %}
+                       <p>{{error}}</p>
+                       {% endif %}
                         <a style="color:#FFF; font-size:  13px; align-items: center; " href="{{url_for('register')}}"><u>Create an account?</u></a>
                     </div>
                 </div>

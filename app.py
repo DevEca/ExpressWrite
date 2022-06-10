@@ -95,7 +95,7 @@ def unauth():
   
 @app.route('/login', methods =['GET', 'POST'])
 def login():
-   
+   error = None
    if request.method == 'POST':
       name = request.form['username']
       password = request.form['password'].encode('utf-8')
@@ -104,14 +104,15 @@ def login():
       users = cur.fetchone()
       cur.close()
 
-      if users == 0:
-         error = 'incorrect username/password'
-         return render_template('login.html', error=error)
+      if users:
+         session['loggedin'] = True
+         session['name'] = users['name']
+         return redirect(url_for('indexuser', users=users ))
 
-      session['loggedin'] = True
-      session['name'] = users['name']
-      return redirect(url_for('indexuser', users=users ))
-   return render_template('login.html')
+      else:
+         error = 'incorrect username/password'
+      
+   return render_template('login.html', error=error)
       
          
    
@@ -287,7 +288,7 @@ group by cumSum
 
 @app.route('/savetrans', methods = ['GET', 'POST'])
 def savetrans():
-   
+
    if session.get('name'):
       cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
       cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))
