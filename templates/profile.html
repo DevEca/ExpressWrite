@@ -21,10 +21,9 @@
             <p id="title"> Your Account Details </p>
             <p>Username: {{ account['name'] }}</p>
             <p>Email: {{ account['email'] }} </p>
-            <p><a  href="{{ url_for('changepass') }}"> Change Password </a></p>
+            <a style="justify-content: center; font-size: 15px; font-weight: bold;"href="{{ url_for('changepass') }}"> Change Password </a>
             
-        </div>
-        <div class="savedtrans"> 
+         
             <p id="title"> Your Saved Translations </p>
             <table>
                 {% for i in account2: %}
