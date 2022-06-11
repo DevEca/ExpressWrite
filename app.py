@@ -12,7 +12,7 @@ import MySQLdb.cursors
 import re
 import configparser
 import gunicorn
-import pytz_deprecation_shim as pd
+
 
 
 app = Flask(__name__)
