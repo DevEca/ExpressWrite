@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "expresswrite"
+version = "0.1"
+description = "express"
+
+[project.scripts]
+express_write = "app:master"
+
+[tool.distutils.bdist_wheel]
+universal = true
