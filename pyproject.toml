@@ -8,7 +8,7 @@ version = "0.1"
 description = "express"
 
 [project.scripts]
-express_write = "app:master"
+express_write = "app:main"
 
 [tool.distutils.bdist_wheel]
 universal = true
