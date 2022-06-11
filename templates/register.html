@@ -27,6 +27,10 @@
                                 
                             </form>
                             <a style="color:#FFF; font-size:  13px; text-align: center; " href="{{url_for('login')}}"><u>I have an account</u> </a>
+                            
+                            {% if error %}
+                            <p>{{error}}</p>
+                            {% endif %}
                     </div>
                 </div>
             </div>

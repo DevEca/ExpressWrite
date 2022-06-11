@@ -10,7 +10,7 @@
           "sizes": "346x346"
         }
     ],
-    "start_url": "/",
+    "start_url": "/index",
     "display": "standalone",
     "orientation": "portrait"
 }
