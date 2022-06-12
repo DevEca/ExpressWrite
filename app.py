@@ -2,6 +2,7 @@ from cProfile import run
 import os
 from flask import Flask, render_template, request, url_for, session, redirect, flash, make_response
 from httplib2 import Response
+from numpy import size
 from werkzeug.utils import secure_filename
 from flask import Flask,render_template, request
 from fpdf import FPDF
@@ -11,7 +12,7 @@ import mysql
 import MySQLdb.cursors
 import re
 from configparser import SafeConfigParser
-
+from PIL import Image
 
 app = Flask(__name__)
 
@@ -27,33 +28,11 @@ mysql.init_app(app)
 
 #buttons paths:
 
-@app.route('/user_image')
-def index():
-    logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
-    import os
-    if os.path.exists("static/img/img_00.png"):
-       os.remove("img_00.png")
-    else:
-       pass
-    return render_template("index.html", user_image = logo)
-
 @app.route('/')
-def index1():
+def index():
    
-   logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
-   return render_template("index.html", user_image = logo)
-
-@app.route('/logout')
-def logout():
-   session.pop('name', None)
-   if session.get('name'):
-      import os
-      if os.path.exists("static/img/img_00.png"):
-       os.remove("static/img/img_00.png")
-      else:
-       pass
-   #session['loggedin'] = False
-   return redirect('/index')
+   #logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
+   return render_template("index.html")
 
 @app.route("/index")
 def transagain():
@@ -92,7 +71,6 @@ def unauth():
 
 @app.route('/changepass')
 def changepass():
-   
    return render_template("changepass.html")
 
 @app.route('/savepass', methods =['GET', 'POST'])
@@ -108,7 +86,7 @@ def savepass():
       
 
       if users['password'] == newpass and users['password'] == password:
-         error = 'same password in current'
+         error = 'Same password in current!'
          return render_template('changepass.html', error=error)
 
       elif users['password'] == password:
@@ -117,15 +95,30 @@ def savepass():
          return render_template('changesuccess.html')
      
       else:      
-         error = 'incorrect old password'
+         error = 'Incorrect old password!'
          return render_template('changepass.html', error=error)
 
    else:
       return render_template('changepass.html')
 
+@app.route('/delete', methods = ['GET', 'POST'])
+def deletetrans():
+   resultid = request.form['resultid']
+   cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+   cursor.execute('DELETE FROM result_table WHERE result_id = %s', [resultid])
+   mysql.connection.commit()
+   return redirect(url_for('profile'))     
       
-      
-  
+@app.route('/logout')
+def logout():
+   session.pop('name', None)
+   if session.get('name'):
+      import os
+      if os.path.exists("static/img/img_00.png"):
+       os.remove("static/img/img_00.png")
+      else:
+       pass
+   return redirect('/index')
 
 #end of button paths
 
@@ -137,10 +130,10 @@ def login():
    if request.method == 'POST':
       name = request.form['username']
       password = request.form['password'].encode('utf-8')
-      cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-      cur.execute("SELECT * FROM user WHERE name = %s AND password = %s", (name, password))
-      users = cur.fetchone()
-      cur.close()
+      cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+      cursor.execute("SELECT * FROM user WHERE name = %s AND password = %s", (name, password))
+      users = cursor.fetchone()
+      cursor.close()
 
       if users:
          session['loggedin'] = True
@@ -148,13 +141,10 @@ def login():
          return redirect(url_for('indexuser', users=users ))
 
       else:
-         error = 'incorrect username/password'
+         error = 'Incorrect username/password!'
       
    return render_template('login.html', error=error)
       
-         
-   
-
 # Register Function
 
 @app.route('/register', methods = ['GET', 'POST'])
@@ -166,24 +156,24 @@ def register():
          email = request.form['email']
          password = request.form['password']
 
-         cur1 = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-         cur1.execute("SELECT * FROM user WHERE name = %s", [name])
-         users1 = cur1.fetchone()
+         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+         cursor.execute("SELECT * FROM user WHERE name = %s", [name])
+         users1 = cursor.fetchone()
       
 
          if users1:
-            error = 'username already registered'
+            error = 'Username already registered!'
             return render_template('register.html', error=error)
 
          else:
             
-            cur1.execute("INSERT INTO user(name,email,password) VALUES(%s, %s, %s)", (name, email, password))
+            cursor.execute("INSERT INTO user(name,email,password) VALUES(%s, %s, %s)", (name, email, password))
             mysql.connection.commit()
-            cur1.close()
+            cursor.close()
             return render_template('successreg.html')
       return render_template('register.html')
 
-picFolder = os.path.join('static', 'img')
+picFolder = os.path.join('tmp')
 app.config['UPLOAD_FOLDER'] = picFolder
 	
 # Translation Function
@@ -206,7 +196,7 @@ def upload_file1():
       warnings.simplefilter("ignore")
 
       import os, cv2
-      os.chdir(r'C:\xampp\htdocs\ExpressWrite\static\img')
+      os.chdir(r'C:\xampp\htdocs\ExpressWrite\tmp')
 
       fileList = [x for x in os.listdir() if 'png' or 'jpg' in x.lower()]
       fileList[:5]
@@ -215,9 +205,10 @@ def upload_file1():
 
       img = fileList[0]
 
+      
       def findHorizontalLines(img):
          img = cv2.imread(img) 
-    
+        
     #convert image to greyscale
          gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     
@@ -300,12 +291,10 @@ group by cumSum
    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/xampp/htdocs/ExpressWrite/JSON File/expresswrite-dd1b301590f7.json"
 
    def CloudVisionTextExtractor(handwritings):
-      # convert image from numpy to bytes for submittion to Google Cloud Vision
       _, encoded_image = cv2.imencode('.png', handwritings)
       content = encoded_image.tobytes()
       image = vision.Image(content=content)
      
-      # feed handwriting image segment to the Google Cloud Vision API
       client = vision.ImageAnnotatorClient()
       response = client.document_text_detection(image=image,image_context= {"language_hints": ["en"]})
       return response
@@ -324,7 +313,6 @@ group by cumSum
 # Saving cloud translation into array
    
    y = 0
-
    listtextCV = []
    
    for m in segments:
@@ -367,7 +355,7 @@ def result():
    page_width = pdf.w -2 * pdf.l_margin
        
    pdf.set_font('Times', 'B', 14.0)
-   pdf.cell(page_width, 0.0, 'RESULT', align='C')
+   pdf.cell(page_width, 0.0, 'RESULT TRANSLATION', align='C')
    pdf.ln(10)
        
    pdf.set_font('Courier', '', 12)
@@ -381,22 +369,48 @@ def result():
       
    pdf.multi_cell(0, 5, result)
    pdf.ln(10)
-       
-   pdf.set_font('Times','',10.0)
-   pdf.cell(page_width, 0.0, '- end of report -', align ='C')
+   
+   vowelcounter = len(re.findall('[aeiouAEIOU]', result))
+   vowelstring = str(vowelcounter)
+   pdf.set_font('Times', 'B', 14.0)
+   pdf.cell(0,0, 'Number of vowels:' + vowelstring)
+   pdf.ln(5)
+
+   consonantcounter = len(re.findall('[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZÑñ]', result))
+   consonantstring = str(consonantcounter)
+   pdf.set_font('Times', 'B', 14.0)
+   pdf.cell(0,0, 'Number of consonants: ' + consonantstring)
+   pdf.ln(5)
+
+   uppercasecounter = len(re.findall('[ABCDEFGHIJKLMNOPQRSTUVWXYZÑ]', result))
+   uppercasestring = str(uppercasecounter)
+   pdf.set_font('Times', 'B', 14.0)
+   pdf.cell(0,0, 'Number of uppercase letters: ' + uppercasestring)
+   pdf.ln(5)
+
+   lowercasecounter = len(re.findall('[abcdefghijklmnopqrstuvwxyzñ]', result))
+   lowercasestring = str(lowercasecounter)
+   pdf.set_font('Times', 'B', 14.0)
+   pdf.cell(0,0, 'Number of lowercase letters: ' + lowercasestring)
+   pdf.ln(5)
+
+   lettercounter = len(re.findall('[abcdefghijklmnopqrstuvwxyzñABCDEFGHIJKLMNOPQRSTUVWXYZÑ]', result))
+   letterstring = str(lettercounter)
+   pdf.set_font('Times', 'B', 14.0)
+   pdf.cell(0,0, 'Total number of letters: ' + letterstring)
+   pdf.ln(5)
+
+   numbercounter = len(re.findall('[0123456789]', result))
+   numberstring = str(numbercounter)
+   pdf.set_font('Times', 'B', 14.0)
+   pdf.cell(0,0, 'Total count of numbers: ' + numberstring)
+   pdf.ln(5)
+
    response = make_response(pdf.output(dest='S').encode('latin-1'))
    response.headers.set('Content-Disposition', 'attachment',filename='result.pdf')
    response.headers.set('Content-Type', 'application/pdf')
    return response
 
-@app.route('/delete', methods = ['GET', 'POST'])
-def deletetrans():
-   resultid = request.form['resultid']
-   cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-   cursor.execute('DELETE FROM result_table WHERE result_id = %s', [resultid])
-   mysql.connection.commit()
-   return redirect(url_for('profile'))
-	 
 @app.route('/offline.html')
 def offline():
     return app.send_static_file('offline.html')

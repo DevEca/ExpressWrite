@@ -18,6 +18,9 @@
                 <div class="inner-box">
                     <div class="card-front">
                         <h2>Change Password</h2>
+                        {% if error %}
+                       <p>{{error}}</p>
+                       {% endif %}
                         <form action="{{url_for('savepass')}}" method="post">
                             <input type="password" class="input-box" name="password" id="password" placeholder="Old Password" required>
                             <input type="password" class="input-box" name="newpass" id="newpass" placeholder="New Password" required>
@@ -25,9 +28,7 @@
                             <button type="submit" class="submit-btn">Change Password</button>
                         </form>
 
-                        {% if error %}
-                       <p>{{error}}</p>
-                       {% endif %}
+                        
                     </div>
                 </div>
             </div>
