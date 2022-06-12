@@ -19,6 +19,9 @@
                 <div class="inner-box">
                     <div class="card-back">    
                         <h2>REGISTER</h2>
+                            {% if error %}
+                            <p>{{error}}</p>
+                            {% endif %}
                             <form method="POST", action="{{url_for('register')}}">
                                 <input type="text" class="input-box" id="name" name="name"  placeholder="Username" required> 
                                 <input type="email" class="input-box" id="email" name="email"  placeholder="Email ID" required>
@@ -28,9 +31,7 @@
                             </form>
                             <a style="color:#FFF; font-size:  13px; text-align: center; " href="{{url_for('login')}}"><u>I have an account</u> </a>
                             
-                            {% if error %}
-                            <p>{{error}}</p>
-                            {% endif %}
+                            
                     </div>
                 </div>
             </div>
