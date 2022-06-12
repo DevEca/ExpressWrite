@@ -16,10 +16,10 @@ import gunicorn
 
 app = Flask(__name__)
 
-app.config['MYSQL_HOST'] = "localhost"
-app.config['MYSQL_USER'] = "root"
-app.config['MYSQL_PASSWORD'] = ""
-app.config['MYSQL_DB'] = "expresswrite"
+app.config['MYSQL_HOST'] = "us-cdbr-east-05.cleardb.net"
+app.config['MYSQL_USER'] = "be117ce009008c"
+app.config['MYSQL_PASSWORD'] = "daa1e6a3"
+app.config['MYSQL_DB'] = "heroku_c09399ed9c9eb8f"
 app.config['MYSQL_CURSORCLASS']='DictCursor'
 app.config['SECRET_KEY'] = " "
 
