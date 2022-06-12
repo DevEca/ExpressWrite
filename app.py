@@ -11,15 +11,16 @@ from flask_mysqldb import MySQL
 import mysql
 import MySQLdb.cursors
 import re
-from configparser import SafeConfigParser
-from PIL import Image
+import configparser
+import gunicorn
+
 
 app = Flask(__name__)
 
-app.config['MYSQL_HOST'] = "localhost"
-app.config['MYSQL_USER'] = "root"
-app.config['MYSQL_PASSWORD'] = ""
-app.config['MYSQL_DB'] = "expresswrite"
+app.config['MYSQL_HOST'] = "us-cdbr-east-05.cleardb.net"
+app.config['MYSQL_USER'] = "be117ce009008c"
+app.config['MYSQL_PASSWORD'] = "daa1e6a3"
+app.config['MYSQL_DB'] = "heroku_c09399ed9c9eb8f"
 app.config['MYSQL_CURSORCLASS']='DictCursor'
 app.config['SECRET_KEY'] = " "
 
@@ -324,7 +325,7 @@ group by cumSum
       y = y+1
       
    else:
-      return render_template('result.html', textresultCV = listtextCV) 
+      return render_template('textresult.html', textresultCV = listtextCV) 
 
 @app.route('/savetrans', methods = ['GET', 'POST'])
 def savetrans():
