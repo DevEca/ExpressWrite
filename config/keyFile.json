@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "expresswrite",
+  "private_key_id": "afdc5ecccde7122fd157a8274dae5d57f57def85",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCL67mdodC3UqZB\nZUpfAz1WqCoNIYgzuWpTF9bfMOC+Bn9CtldQ3iHSAcfvaEJ9I/zTrCw0qn8G2S+Z\n6cL0E4tssBlWVgPX3AklUN9uu6WkaLgC3p2A9En5R04JeUPh0whjwtGMz2IUjNUJ\n16pHd/nWIq8YbG2ViBPoibRgCscWG/4/xD4oQjK5AFAiDiylhpK6IbDtF0cyNaD5\n8OlKBFUkPzX4skPRLeiqf9DmfLcztABRiJc1UBgbOzvO1Xr+eLSnZtumYQGgIqFF\nOJFhPvC8KyJLAie6Rd+crX+98SB+Zqr70jxjc8DEjxdLsChXPFnRQZ3OfjpDrbU6\nyrNtl7PzAgMBAAECggEADwGo+9fbL5Dc2ukBqR9gU0HK7Miat9gcKALyXSf8BUq4\nww9qXaEipcg3c3JOUJHtBPNoyac643b6AiW47n4wIb0198qsM9kEtBdbN0rx0NMY\nX9pqBbwYOPTlpjd2ySqzMiaMB0WbYn0uQMAmzO54Vvfg/ptrxLH+V0jO6yQMxnlG\nghb8f7GEyRMvpIhy4tZYh4AFG+edFdFb941f18H1y4Bek25gkUd5t9Abyn6blPKb\nuiVtUvNX23yT1er6RpmqCy0kkNuQTmt4nwdTZwzehoP7eW8n8HIRmlxpXnhmOfVW\nTMwjQBWzyGFJraX4sWOVZ+Kc51WgHB3jgvA5V2Na3QKBgQDB5w5bbHW+K0ZL4cW9\n4EWYeZJ/Yl4iojzErqf8K+nvNGSnO0OQf80Xdf2DHlnaWcbbxImPCzuhTGSblpza\npjhHW0gVj+9UKqNl1tBuWbT4xoLi3MeYXAW5y4wEpT2hHGzRr0808sd2ePZ8ih4c\nYR8r/j9g/SWVq4n1FkeR/6uOLwKBgQC4uwSkzGsW6ShUQUA3b5zRqPpMgKaReh8M\n1bwHHJGGTgiUS6EesEXJW6HEpTY0rGSFC8w8vLAvS26sajXW0PE3n8LhO9aKaoYo\nI9wzxQR5rbsQ3N9K54Q5QBNwJmwZMH7D8ejncR+6A9TLemjldPc6s0qEeQRoiFtq\nf3dTcB5pfQKBgQCejKP8tY8BVLlCSvY58Cx4JNBZQMHgZ/Bwkq/hTrcWVS0IYTk5\n6oZ07JHCqQqntEkaYnZodLLpjWGmp1zSnJ/gGQ+0MeFsXQEGwMPlt4x27zsO7aB3\nQKed6IYxNjxShL+mJUcK8ImQohBKfVVptzCZ9Gc2k0gsPfusX+9dvkU1GQKBgEoR\nSlJdWA7Om4n0w6+2g7UYwIsOBjtMMMjvpb1gOgUUoqH7FPX+DW0n3VvANlS2TnN+\nAHzV1vqPjyd4SnAARMddukCewm2rOnE7t53WP+4dt2SSesFIxJ5Dz8dm0G7lH96m\nzxCFLghiYt7XDNn7pOkXXChzcU4MZkL0Kr78tGTtAoGBAIITacgT2w70IwuL9yAD\nKQmTjaqqDWccPi1fREjDvawMFKErN0pZN5/JpPZ3gq9BTeo1SaGYoy7vjCInLzPI\nQN1/QpuIsaTq8dH+nr5rlzluLGpZ7J5fqKUgCAR4upYufsGQI4lqMACkv/yf/hL5\ntAfU6bR+Lu+Hb9AXUOD4kUYS\n-----END PRIVATE KEY-----\n",
+  "client_email": "visionheroku@expresswrite.iam.gserviceaccount.com",
+  "client_id": "100789294596350176744",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/visionheroku%40expresswrite.iam.gserviceaccount.com"
+}
