@@ -196,7 +196,7 @@ def upload_file1():
       warnings.simplefilter("ignore")
       
       import os, cv2
-      os.chdir(r'C:\xampp\htdocs\ExpressWrite\tmp')
+      os.chdir(r'github.com/mangkanor725/ExpressWrite/tree/master/tmp')
 
       fileList = [x for x in os.listdir() if 'png' or 'jpg' in x.lower()]
       fileList[:5]
