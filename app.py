@@ -194,7 +194,7 @@ def upload_file1():
 
       import warnings
       warnings.simplefilter("ignore")
-
+      
       import os, cv2
       os.chdir(r'C:\xampp\htdocs\ExpressWrite\tmp')
 
