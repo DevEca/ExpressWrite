@@ -12,7 +12,7 @@ import mysql
 import MySQLdb.cursors
 import re
 import configparser
-import gunicorn
+#import gunicorn
 
 
 app = Flask(__name__)
@@ -176,7 +176,7 @@ def register():
 
 picFolder = os.path.join('tmp')
 app.config['UPLOAD_FOLDER'] = picFolder
-	
+base_path = os.path.dirname(__file__)	
 # Translation Function
 
 @app.route('/textresult', methods = ['GET', 'POST'])
@@ -186,7 +186,7 @@ def upload_file1():
       f = request.files['file']
       filename = secure_filename(f.filename)
       import os
-      f.save(os.path.join(app.config['UPLOAD_FOLDER'], 'img_00.png'))
+      f.save(os.path.join(base_path + "/" + app.config['UPLOAD_FOLDER'], 'img_00.png'))
 
       from IPython.display import Image
       from matplotlib import pyplot as plt
