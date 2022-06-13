@@ -178,7 +178,7 @@ app.config['UPLOAD_FOLDER'] = picFolder
 base_path = os.path.dirname(__file__)	
 # Translation Function
 
-@app.route('/textresult', methods = ['GET', 'POST'])
+@app.route('/textresult', methods = ['POST'])
 def upload_file1():
    import os
    if request.method == 'POST':
