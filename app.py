@@ -14,7 +14,6 @@ import re
 import configparser
 import gunicorn
 
-
 app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = "us-cdbr-east-05.cleardb.net"
@@ -422,4 +421,4 @@ def sw():
     return app.send_static_file('service-worker.js')
  
 if __name__ == '__main__':
-   app.run(debug = True, port=33507)
+   app.run(debug = True)
