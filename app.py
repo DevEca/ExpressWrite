@@ -323,8 +323,8 @@ group by cumSum
       listtextCV.append(handwrittenText)
       y = y+1
       
-   else:
-      return render_template('textresult.html', textresultCV = listtextCV) 
+
+   return render_template('textresult.html', textresultCV = listtextCV) 
 
 @app.route('/savetrans', methods = ['GET', 'POST'])
 def savetrans():
