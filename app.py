@@ -344,7 +344,7 @@ def savetrans():
 
 @app.route('/result/pdf', methods = ['GET', 'POST'])
 def result():
-   result = request.form['result']    
+   result = request.form['texttrans']    
 
    pdf = FPDF()
    pdf.add_page()
