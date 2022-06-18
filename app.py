@@ -12,7 +12,6 @@ import mysql
 import MySQLdb.cursors
 import re
 import configparser
-import gunicorn
 
 app = Flask(__name__)
 
@@ -30,8 +29,6 @@ mysql.init_app(app)
 
 @app.route('/')
 def index():
-   
-   #logo = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
    return render_template("index.html")
 
 @app.route("/index")
