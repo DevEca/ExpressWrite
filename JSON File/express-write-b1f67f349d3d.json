@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "express-write",
+  "private_key_id": "b1f67f349d3d9f5a0b4d1b4b66223a68ef252add",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDnVPVCXI132gEZ\niuQh1pDSNnybJ7+G0ifr7l+FLtfRT2wnHbx/6sFYx2ijn5vjRHXoPFsn/wlXPBrd\nfs+9ubvpyfNYZG9ZRKi8jkipm061z/H7m6MpYwym97o7FFLGsO4bAyjRKW4/HG/F\n8Y8YQERJkYbTbKVlGY4g6grKwoHKd1av1QVMrUnSSJAzJOhIo6ucofl4RlWrft3A\nEvdQsGsJizr8h/OZZ6Urm2lkWdpuWPqYWbO6uDtG2sA22AYFO+N4DDgczWs9M/nF\nLcQfrnSAC6/KzorjjFpGZdnwD+kx0C76eBkey3h3WwV8oY/VaCXcnOmnib6h/Ozs\nXwxNr0VJAgMBAAECggEAHmJDxmrBRVp+Zibzzi1QSd6l4NEd2wI+WRgu4Uok8ZUk\nx5ckcN6vdM7YLmmNKugNM9VoRFQUm38a/jhPkS6p1kv+qNT5j7gwu3dVZuWDDJFF\nShQH9ax7THDhkSybBLAszffNGXp/bvhNW//dbhopffTdyGY5lmepXycDsjGi+im7\nl/mW0D3DB1r8XxLm8y0XlLLEtRyX6HClCM/MUOObILWd4bCF/UbYOuJyFNFBvcEb\n4WM61zXhdXG2/mct9EBwqDUKb0P6qhnokXqaA49UBiyFTmWy7aqgnpPqj3LarKes\nyUctQ4UUKTKmWvCzLnCgjx4gTvdGhDSxogEvAwleCwKBgQDz33MmmocbFyXI2fqh\nSlqZEtW+ihVVQwuq2afx9bNDKJPOR3c5GGOakYrCp5DPJZJRgPUANJ/P8XlcpF+n\nBiDWNnoiU6aYRAj+zEsrCcU4Egm+deDebtFRB0CdHwTzaBKYQIEzdDsPHmEJKFqs\nvl0YJEo0BdO9Tr4liybSOF4CKwKBgQDy1dvn5AV/8YaLvzI3oAg0va8uf2E8IrPM\n85F58mjFT1Nfx+xuGNcbxmcWdEc4glVAZ8sKez5VS9GWFmxJLxrTlIuY9NU3+qSQ\nVORMYWMKRcXDgRpDu/oXj390rYzcwFjcJZIzNBQJdNlN7JSf7qB0TBAMdz/IaFwN\nl0De9Q2AWwKBgQDFsI9h7cYz2bHRfZJECUgj6jbGvJzKfw0INGSGKcxlVpFqmFg3\nOmQTuoOng7pJkYVo+Iai4gXixTbCOKUpejhILeUXyoOzzwMTuXv9qW/sIgMwF9Jv\nvZmEe8KPG8QhpG3eafvSQBhYCyJSEBphCffhSBm2zjp0rU5KlOClbPgX/QKBgQDb\n5zahJCim2D2TR61eGhnUSQHfBZM0NejE7L0MxayDIXbLAezlNrF1gZHRD7N/ROeW\nz2dbMogcDfDaDaw6CeItQBO6i9yaOOvVmEq1sGtT3iNdDAiQ1iWAOH6fVpp9PeI6\nWfuvSrXqalpu6pMc0aeUKV1PLJ4iCf9yf0pLnXaAiQKBgA5ZNNolBUoWFpchT/3J\nk0N5JiwBv1ju7+g+WWuMCKG0UzB304rxJqn9s++3VUQgtJ6IOP8VMKVHOZgoDkae\n38V6R4NNqkNkheRa3tM0ylP1vqpszOeSnhU/mkI93MGhH4H8V10FME48l8p6hUAw\nNPC0VtoGMmeBxauAxbadYxpZ\n-----END PRIVATE KEY-----\n",
+  "client_email": "expresswrite@express-write.iam.gserviceaccount.com",
+  "client_id": "102929542205552748379",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/expresswrite%40express-write.iam.gserviceaccount.com"
+}
