@@ -98,7 +98,7 @@ a {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  text-align: center;
+  text-align: right;
   color: #009688;
 }
 
