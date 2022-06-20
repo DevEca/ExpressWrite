@@ -21,7 +21,12 @@
             </div>
             <div class="content">
                 <h1>ExpressWrite</h1>
-                <p> Recognize handwritten numbers, word and letters with ease. </p>
+                <p> is a web application that aims to help people 
+                    <br>understand a handwriting better. 
+                    <br>It scans your handwritten words and convert it into text. 
+                    <br>Download your handwriting in PDF File is also available! </p>
+                <h1 class="uploadnow">Upload Now</h1>
+                <p>Upload your image with .png or .jpg extension!</p>
                 <form action = "/textresult" method = "POST" enctype = "multipart/form-data">
                 <input id = file-upload type = "file" accept=".png, .jpeg, .jpg" name = "file" /><br>
                 <input type = "submit" onclick="return VerifyUploadFile()"/>
