@@ -281,3 +281,7 @@ table {
   margin-left: auto;
   margin-right: auto;
 }
+
+textarea {
+  overflow: scroll;
+}
