@@ -15,7 +15,16 @@
    <div class="content">
       
       <h1>Your writing means...</h1>
-   
+      <label>Text Size: </label>
+      <input type="submit" value="-" name="largetext" onclick="decreasesize()"/>
+      <input type="submit" value="+" name="largetext" onclick="increasesize()"/>
+      <label>Text Style: </label>
+      <input type="submit" value="N" name="largetext" onclick="normal()"/>
+      <input type="submit" value="I" name="largetext" onclick="italic()"/>
+      <input type="submit" value="B" name="largetext" onclick="bold()"/><br>
+      <input type="submit" value="Text to Speech" name="largetext" onclick="texttoSpeech()"/><br>
+
+
       <form action="{{ url_for('.result') }}" method = "POST" enctype = "multipart/form-data">
          <textarea id="textresult" name="texttrans" rows="20" cols="50">
             {% for n in textresultCV: %}
@@ -27,36 +36,54 @@
       <form action="{{ url_for('transagain') }}">
          <input type="submit" value="Translate Again" name="transagain"/>
       </form>
-      <input type="submit" value="Text to Speech" name="largetext" onclick="texttoSpeech()"/>
-      <p>Text Size: </p>
-      <input type="submit" value="Medium" name="largetext" onclick="large()"/>
-      <input type="submit" value="Large" name="largetext" onclick="xlarge()"/>
-      <input type="submit" value="Extra Large" name="largetext" onclick="xxlarge()"/><br>
+      
+      
+      
       
 
      
    </div>
 
    <script type="text/javascript">
-      function large(textarea)
+      function decreasesize(textarea)
       {
-         textresult.style.fontSize = "large";
+         var text = document.getElementById('textresult');
+         size = window.getComputedStyle(text, null).getPropertyValue('font-size');
+         currentSize = parseFloat(size);
+         text.style.fontSize = (currentSize - 1) + 'px';
       }
       </script>
 
    <script type="text/javascript">
-   function xlarge(textarea)
-   {
-      textresult.style.fontSize = "x-large";
-   }
+      function increasesize(textarea)
+      {
+         var text = document.getElementById('textresult');
+         size = window.getComputedStyle(text, null).getPropertyValue('font-size');
+         currentSize = parseFloat(size);
+         text.style.fontSize = (currentSize + 1) + 'px';
+      }
+   </script>
+   
+   <script type="text/javascript">
+      function normal(textarea)
+      {
+         textresult.style.fontWeight = "Normal";
+         textresult.style.fontStyle = "Normal";
+      }
    </script>
 
    <script type="text/javascript">
-   function xxlarge(textarea)
-   {
-      textresult.style.fontSize = "xx-large";
-      
-   }
+      function italic(textarea)
+      {
+         textresult.style.fontStyle = "Italic";
+      }
+   </script>
+
+   <script type="text/javascript">
+      function bold(textarea)
+      {
+         textresult.style.fontWeight = "Bold";
+      }
    </script>
 
 <script type="text/javascript">

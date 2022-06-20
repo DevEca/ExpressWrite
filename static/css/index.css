@@ -108,7 +108,16 @@ a {
   font-size: 60px;
   margin-top: 80px;
 }
+
 .content p{
+  color: #009688;
+  margin-top: 20px auto;
+  font-size: 16px;
+  font-weight: 100;
+  line-height: 25px;
+}
+
+.content label{
   color: #009688;
   margin-top: 20px auto;
   font-size: 16px;
@@ -118,7 +127,6 @@ a {
 
 .uploadnow {
   font-size: 60px;
-  
 }
 
 .resultcontent{
@@ -280,8 +288,4 @@ input[type=button], input[type=submit], input[type=file] {
 table {
   margin-left: auto;
   margin-right: auto;
-}
-
-textarea {
-  overflow: scroll;
 }
