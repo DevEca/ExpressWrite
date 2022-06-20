@@ -11,16 +11,12 @@
         <div class="banner">
             <div class="navbar">
                 <a href="{{ url_for('transagain') }}"><img src="{{url_for('static', filename='img/logo.png')}}" class="logo"></a>
-                <ul id = "users">
-                    <li><a href="{{ url_for('register') }}">Register</a></li>
-                    <li><a href="{{ url_for('login') }}">Login</a></li>
-                </ul>
             </div>
             <div class="content">
                 <h1>ExpressWrite</h1>
                 <p> Recognize handwritten numbers, word and letters with ease. </p>
                 <form action = "/textresult" method = "POST" enctype = "multipart/form-data">
-                <input type = "file" accept=".png, .jpeg, .jpg" name = "file" /><br>
+                <input id = file-upload type = "file" accept=".png, .jpeg, .jpg" name = "file" /><br>
                 <input type = "submit" onclick="return VerifyUploadSizeIsOK()"/>
                 </form> 
             </div> 
@@ -30,15 +26,37 @@
             {
                /* Attached file size check. Will Bontrager Software LLC, https://www.willmaster.com */
                var UploadFieldID = "file-upload";
-               var MaxSizeInBytes = 2097152;
+               var MaxSizeInBytes = 2000000;
                var fld = document.getElementById(UploadFieldID);
+               var fileName = document.querySelector('#file-upload').value;
+               var extension = fileName.split('.').pop();
+               var accept = ['.png', '.jpg', '.jpeg']
                if( fld.files && fld.files.length == 1 && fld.files[0].size > MaxSizeInBytes )
                {
-                  alert("The file size must be no more than " + parseInt(MaxSizeInBytes/2024/2024) + "MB");
+                  alert("The file size must be no more than 2MB");
+                  return false;
+               }
+
+               if( extension != accept)
+               {
+                  alert("This file type is not supperted. Please upload png or jpg file only.");
                   return false;
                }
                return true;
-            } // function VerifyUploadSizeIsOK()
+            }
+            
+            function VerifyFileType()
+            {
+                fileName = document.querySelector('#file-upload').value;
+                extension = fileName.type.split('.')[0];
+                
+               if( extension == pdf )
+               {
+                  alert("This file type is not supperted. Please upload png or jpg file only.");
+                  return false;
+               }
+               return true;
+            }
         </script>
 </body>
 </html>
