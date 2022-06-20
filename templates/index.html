@@ -17,14 +17,13 @@
                 <p> Recognize handwritten numbers, word and letters with ease. </p>
                 <form action = "/textresult" method = "POST" enctype = "multipart/form-data">
                 <input id = file-upload type = "file" accept=".png, .jpeg, .jpg" name = "file" /><br>
-                <input type = "submit" onclick="return VerifyUploadSizeIsOK()"/>
+                <input type = "submit" onclick="return VerifyUploadFile()"/>
                 </form> 
             </div> 
         </div>
         <script type="text/javascript">
-            function VerifyUploadSizeIsOK()
+            function VerifyUploadFile()
             {
-               /* Attached file size check. Will Bontrager Software LLC, https://www.willmaster.com */
                var UploadFieldID = "file-upload";
                var MaxSizeInBytes = 2000000;
                var fld = document.getElementById(UploadFieldID);
@@ -38,19 +37,6 @@
                }
 
                if( extension != accept)
-               {
-                  alert("This file type is not supperted. Please upload png or jpg file only.");
-                  return false;
-               }
-               return true;
-            }
-            
-            function VerifyFileType()
-            {
-                fileName = document.querySelector('#file-upload').value;
-                extension = fileName.type.split('.')[0];
-                
-               if( extension == pdf )
                {
                   alert("This file type is not supperted. Please upload png or jpg file only.");
                   return false;
