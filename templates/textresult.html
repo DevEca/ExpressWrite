@@ -24,10 +24,19 @@
          </textarea><br><br>
          <input type="submit" value="Download PDF" name="savetrans"/>
       </form>
-         
+      <div class="row">
+         <label>Select Voice</label>
+         <div class="outer">
+            <select>
+            </select>
+         </div>
+      </div>
+      <br>
+      <button>Convert to Speech</button>
       <form action="{{ url_for('transagain') }}">
          <input type="submit" value="Translate Again" name="transagain"/>
       </form>
    </div>
+   <script scr="script.js"></script>
 </body>
 </html>
