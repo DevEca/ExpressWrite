@@ -22,8 +22,8 @@
       <input type="submit" value="N" name="largetext" onclick="normal()"/>
       <input type="submit" value="I" name="largetext" onclick="italic()"/>
       <input type="submit" value="B" name="largetext" onclick="bold()"/><br>
-      <input type="submit" value="Text to Speech" name="largetext" onclick="texttoSpeech()"/><br>
-
+      <input type="submit" id="play" value="Text to Speech" name="largetext" onclick="texttoSpeech()"/><br>
+      
 
       <form action="{{ url_for('.result') }}" method = "POST" enctype = "multipart/form-data">
          <textarea id="textresult" name="texttrans" rows="20" cols="50">
@@ -87,10 +87,12 @@
    </script>
 
 <script type="text/javascript">
-   function texttoSpeech(textarea)
+   function texttoSpeech()
    {
       var text = document.querySelector('#textresult').value;
-      speechSynthesis.speak(new SpeechSynthesisUtterance(text));  
+      var color = document.getElementById("play");
+      color.style.backgroundColor = "Green";
+      speechSynthesis.speak(new SpeechSynthesisUtterance(text));
    }
    
    </script>
