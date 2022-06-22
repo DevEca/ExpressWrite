@@ -285,7 +285,7 @@ group by cumSum
    import os
    from google.cloud import vision
    import io
-   os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/xampp/htdocs/ExpressWrite/JSON File/express-write-b1f67f349d3d.json"
+   os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/xampp/htdocs/ExpressWrite/JSON File/express-354104-305f7a3df473.json"
 
    def CloudVisionTextExtractor(handwritings):
       _, encoded_image = cv2.imencode('.png', handwritings)
