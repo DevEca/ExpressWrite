@@ -16,13 +16,13 @@
       
       <h1>Your writing means...</h1>
       <label>Text Size: </label>
-      <input type="submit" value="-" name="largetext" onclick="decreasesize()"/>
-      <input type="submit" value="+" name="largetext" onclick="increasesize()"/>
+      <input type="submit" value="-" name="dsize" onclick="decreasesize()"/>
+      <input type="submit" value="+" name="isize" onclick="increasesize()"/>
       <label>Text Style: </label>
-      <input type="submit" value="N" name="largetext" onclick="normal()"/>
-      <input type="submit" value="I" name="largetext" onclick="italic()"/>
-      <input type="submit" value="B" name="largetext" onclick="bold()"/><br>
-      <input type="submit" id="play" value="Text to Speech" name="largetext" onclick="texttoSpeech()"/><br>
+      <input type="submit" value="N" name="normal" onclick="normal()"/>
+      <input type="submit" value="I" name="italic" onclick="italic()"/>
+      <input type="submit" value="B" name="bold" onclick="bold()"/><br>
+      <input type="submit" id="play" value="Text to Speech" name="speech" onclick="texttoSpeech()"/><br>
       
 
       <form action="{{ url_for('.result') }}" method = "POST" enctype = "multipart/form-data">
@@ -36,12 +36,6 @@
       <form action="{{ url_for('transagain') }}">
          <input type="submit" value="Translate Again" name="transagain"/>
       </form>
-      
-      
-      
-      
-
-     
    </div>
 
    <script type="text/javascript">

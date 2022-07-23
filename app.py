@@ -33,146 +33,17 @@ def index():
 
 @app.route("/index")
 def transagain():
-   if session.get('name'):
-      import os
-      if os.path.exists("C:/xampp/htdocs/ExpressWrite/static/img/img_00.png"):
-         os.remove("C:/xampp/htdocs/ExpressWrite/static/img/img_00.png")
-      return redirect(url_for('indexuser'))
-   else:
       import os
       if os.path.exists("C:/xampp/htdocs/ExpressWrite/static/img/img_00.png"):
          os.remove("C:/xampp/htdocs/ExpressWrite/static/img/img_00.png")
       return render_template("index.html")
 
-@app.route('/indexuser')
-def indexuser():
-   if session.get('name'):
-      users = session['name']
-      return render_template('indexuser.html', name=users)
-   else:
-      return redirect(url_for('unauth'))
-      
-@app.route('/profile')
-def profile():
-   cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-   cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))
-   account = cursor.fetchone()
-   cursor2 = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-   cursor2.execute("SELECT * FROM result_table WHERE user_id = %s", (account['id'],))
-   account2 = cursor2.fetchall()
-   return render_template('profile.html', account=account, account2=account2)
-
-@app.route('/unauthorized')
-def unauth():
-    return render_template("unauthorizedacc.html")
-
-@app.route('/changepass')
-def changepass():
-   return render_template("changepass.html")
-
-@app.route('/savepass', methods =['GET', 'POST'])
-def savepass():
-   error = None
-   if request.method == 'POST':
-      password = request.form['password']
-      newpass = request.form['newpass']
-      
-      cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-      cur.execute("SELECT * FROM user WHERE name = %s", (session['name'],))
-      users = cur.fetchone()
-      
-
-      if users['password'] == newpass and users['password'] == password:
-         error = 'Same password in current!'
-         return render_template('changepass.html', error=error)
-
-      elif users['password'] == password:
-         cur.execute("UPDATE user SET password = %s WHERE id = %s", (newpass, users['id']))
-         mysql.connection.commit()
-         return render_template('changesuccess.html')
-     
-      else:      
-         error = 'Incorrect old password!'
-         return render_template('changepass.html', error=error)
-
-   else:
-      return render_template('changepass.html')
-
-@app.route('/delete', methods = ['GET', 'POST'])
-def deletetrans():
-   resultid = request.form['resultid']
-   cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-   cursor.execute('DELETE FROM result_table WHERE result_id = %s', [resultid])
-   mysql.connection.commit()
-   return redirect(url_for('profile'))     
-      
-@app.route('/logout')
-def logout():
-   session.pop('name', None)
-   if session.get('name'):
-      import os
-      if os.path.exists("static/img/img_00.png"):
-       os.remove("static/img/img_00.png")
-      else:
-       pass
-   return redirect('/index')
-
 #end of button paths
-
-# Login Function    
-  
-@app.route('/login', methods =['GET', 'POST'])
-def login():
-   error = None
-   if request.method == 'POST':
-      name = request.form['username']
-      password = request.form['password'].encode('utf-8')
-      cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-      cursor.execute("SELECT * FROM user WHERE name = %s AND password = %s", (name, password))
-      users = cursor.fetchone()
-      cursor.close()
-
-      if users:
-         session['loggedin'] = True
-         session['name'] = users['name']
-         return redirect(url_for('indexuser', users=users ))
-
-      else:
-         error = 'Incorrect username/password!'
-      
-   return render_template('login.html', error=error)
-      
-# Register Function
-
-@app.route('/register', methods = ['GET', 'POST'])
-def register():
-      
-      if request.method =='POST':
-         error = None
-         name = request.form['name']
-         email = request.form['email']
-         password = request.form['password']
-
-         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-         cursor.execute("SELECT * FROM user WHERE name = %s", [name])
-         users1 = cursor.fetchone()
-      
-
-         if users1:
-            error = 'Username already registered!'
-            return render_template('register.html', error=error)
-
-         else:
-            
-            cursor.execute("INSERT INTO user(name,email,password) VALUES(%s, %s, %s)", (name, email, password))
-            mysql.connection.commit()
-            cursor.close()
-            return render_template('successreg.html')
-      return render_template('register.html')
 
 picFolder = os.path.join('tmp')
 app.config['UPLOAD_FOLDER'] = picFolder
-base_path = os.path.dirname(__file__)	
+base_path = os.path.dirname(__file__)
+
 # Translation Function
 
 @app.route('/textresult', methods = ['POST'])
@@ -322,26 +193,8 @@ group by cumSum
       
 
    return render_template('textresult.html', textresultCV = listtextCV) 
-
-@app.route('/savetrans', methods = ['GET', 'POST'])
-def savetrans():
-
-   if session.get('name'):
-      cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-      cursor.execute('SELECT * FROM user WHERE name = %s', (session['name'],))
-      account = cursor.fetchone()
-      transCV =  request.form['texttrans']
-      transuserid = account['id']
-      cursor.execute("INSERT INTO result_table(result_text, user_id) VALUES(%s, %s)", (transCV, transuserid))
-      mysql.connection.commit()
-      cursor.close()
-      return render_template('savesuccess.html')
    
-   else:
-      return redirect(url_for('unauth'))
    
-  
-
 @app.route('/result/pdf', methods = ['GET', 'POST'])
 def result():
    result = request.form['texttrans']    

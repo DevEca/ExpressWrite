@@ -1,2 +1,0 @@
-str = "database"
-print(str)
